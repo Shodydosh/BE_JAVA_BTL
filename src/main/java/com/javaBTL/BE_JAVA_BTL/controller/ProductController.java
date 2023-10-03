@@ -1,66 +1,55 @@
 package com.javaBTL.BE_JAVA_BTL.controller;
 
-import com.javaBTL.BE_JAVA_BTL.model.Product;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.javaBTL.BE_JAVA_BTL.model.Product;
+import com.javaBTL.BE_JAVA_BTL.service.ProductService;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping ("/products")
 public class ProductController {
 
-    private List<Product> productList = new ArrayList<>();
+    @Autowired
+    private ProductService productService;
 
-    // Endpoint để lấy tất cả sản phẩm
+    // Get all products
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productList;
+    public ResponseEntity<List<Product>> getAllProducts () {
+        List<Product> products = productService.getAllProducts ();
+        return new ResponseEntity<List<Product>> (products, HttpStatus.OK);
     }
 
-    // Endpoint để lấy tất cả sản phẩm là laptop
-    @GetMapping("/laptop")
-    public List<Product> getAllLaptops() {
-        List<Product> laptops = new ArrayList<>();
-        for (Product product : productList) {
-            if ("laptop".equalsIgnoreCase(product.getCategory())) {
-                laptops.add(product);
-            }
-        }
-        return laptops;
+    // Get a product by id
+    @GetMapping ("/{id}")
+    public ResponseEntity<Product> getProductById (@PathVariable UUID id) {
+        Product product = productService.getProductById (id);
+        return new ResponseEntity<Product> (product, HttpStatus.OK);
     }
 
-    // Endpoint để lấy sản phẩm theo ID
-    @GetMapping("/{id}")
-    public Product getProductById(@PathVariable int id) {
-        for (Product product : productList) {
-            if (product.getId() == id) {
-                return product;
-            }
-        }
-        return null; // Trả về null nếu không tìm thấy sản phẩm
-    }
-
-    // Endpoint để thêm sản phẩm (ADMIN)
+    // Add a new product
     @PostMapping
-    public void addProduct(@RequestBody Product product) {
-        productList.add(product);
+    public ResponseEntity<Product> addProduct (@RequestBody Product product) {
+        productService.addProduct (product);
+        return new ResponseEntity<Product> (product, HttpStatus.CREATED);
     }
 
-    // Endpoint để cập nhật sản phẩm theo ID (ADMIN)
-    @PutMapping("/{id}")
-    public void updateProduct(@PathVariable int id, @RequestBody Product updatedProduct) {
-        for (int i = 0; i < productList.size(); i++) {
-            if (productList.get(i).getId() == id) {
-                productList.set(i, updatedProduct);
-                return;
-            }
-        }
+    // Update an existing product
+    @PutMapping ("/{id}")
+    public ResponseEntity<Product> updateProduct (@PathVariable UUID id, @RequestBody Product product) {
+        productService.updateProduct (id, product);
+        return new ResponseEntity<Product> (product, HttpStatus.OK);
     }
 
-    // Endpoint để xóa sản phẩm theo ID (ADMIN)
-    @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable int id) {
-        productList.removeIf(product -> product.getId() == id);
+    // Delete a product by id
+    @DeleteMapping ("/{id}")
+    public ResponseEntity<Void> deleteProduct (@PathVariable UUID id) {
+        productService.deleteProduct (id);
+        return new ResponseEntity<Void> (HttpStatus.NO_CONTENT);
     }
 }
