@@ -11,7 +11,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    private String url;
+    private String email;
     public Product(){}
 
     public int getId() {
@@ -30,11 +30,11 @@ public class Product {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
