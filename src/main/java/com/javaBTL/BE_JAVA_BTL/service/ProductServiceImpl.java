@@ -29,6 +29,22 @@ public class ProductServiceImpl implements ProductService {
             return productRepository.save(product);
         }
     }
+    @Override
+    public List<Product> uploadProducts(List<Product> products) {
+        // Iterate through the list of products and save each one
+        for (Product product : products) {
+            UUID id = product.getId();
+            if (id != null && productRepository.existsById(id)) {
+                // If the product with this ID exists, update it
+                productRepository.save(product);
+            } else {
+                // If the product doesn't have an ID or it doesn't exist, create a new one
+                product.setId(UUID.randomUUID()); // Assign a new UUID
+                productRepository.save(product);
+            }
+        }
+        return products;
+    }
 
     @Override
     public List<Product> getAllProducts() {

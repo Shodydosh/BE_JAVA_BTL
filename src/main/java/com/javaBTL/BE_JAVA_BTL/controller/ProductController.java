@@ -54,6 +54,10 @@ public class ProductController {
     public Product createProduct(@RequestBody Product product) {
         return productService.createProduct(product);
     }
+    @PostMapping("/upload")
+    public List<Product> uploadProducts(@RequestBody List<Product> products) {
+        return productService.uploadProducts(products);
+    }
     @DeleteMapping("delete/{id}")
     public void deleteProduct(@PathVariable UUID id) {
         productService.deleteProduct(id);
