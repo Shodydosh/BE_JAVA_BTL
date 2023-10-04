@@ -57,4 +57,7 @@ public class ProductServiceImpl implements ProductService {
         // Triển khai logic xóa sản phẩm theo ID ở đây
         productRepository.deleteById(id);
     }
+    public List<Product> getProductsByCategory(String category){
+        return productRepository.getProductsByCategory(category);
+    }
 }

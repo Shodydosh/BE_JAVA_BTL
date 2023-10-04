@@ -36,6 +36,10 @@ public class ProductController {
     public List<Product> searchProducts(@RequestParam("keyword") String keyword) {
         return productService.searchProducts(keyword);
     }
+    @GetMapping("/category/{category}")
+    public List<Product> getProductsByCategory(@PathVariable String category) {
+        return productService.getProductsByCategory(category);
+    }
 
 
     // Admin CRUD operations

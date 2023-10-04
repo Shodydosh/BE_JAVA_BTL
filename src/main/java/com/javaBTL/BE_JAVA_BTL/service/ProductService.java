@@ -12,6 +12,6 @@ public interface ProductService {
     List<Product> getAllLaptops();
     Product getProductById(UUID id);
     List<Product> searchProducts(String keyword); // Thêm phương thức cho tìm kiếm sản phẩm
-
+    List<Product> getProductsByCategory(String category);
     void deleteProduct(UUID id); // Thêm phương thức cho xóa sản phẩm
 }
