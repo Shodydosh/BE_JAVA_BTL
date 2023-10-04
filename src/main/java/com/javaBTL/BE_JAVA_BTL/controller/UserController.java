@@ -18,9 +18,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @PostMapping("/add")
     public String add(@RequestBody User user){
         userService.saveUser(user);
@@ -39,39 +36,35 @@ public class UserController {
         if (user != null) {
             return ResponseEntity.ok(user);
         } else {
-            // Handle the case where the user is not found
+            System.out.println("USER NOT FOUND..");
             return ResponseEntity.notFound().build();
         }
     }
 
-    @DeleteMapping("")
+    @DeleteMapping("/delete")
     public ResponseEntity<String> deleteUser(@RequestParam("id") UUID userId) {
         try {
             userService.deleteUser(userId);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("User deleted successfully.");
+            String successMessage = "User deleted successfully.";
+            return ResponseEntity.status(HttpStatus.OK).body(successMessage);
         } catch (IllegalArgumentException e) {
             // Handle the case when the user with the provided ID does not exist
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+            String notFoundMessage = "User not found.";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notFoundMessage);
+        } catch (Exception e) {
+            // Handle other potential exceptions or log them
+            String errorMessage = "Error deleting user.";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         }
     }
 
-    @PostMapping("")
+
+    @PostMapping("/update")
     public ResponseEntity<User> updateUser(@RequestParam("id") UUID userId, @RequestBody User updatedUser) {
         try {
-            // Find the existing user by ID
-            Optional<User> existingUserOptional = userRepository.findById(userId);
+            User updatedUserResult = userService.updateUser(userId, updatedUser);
 
-            if (existingUserOptional.isPresent()) {
-                User existingUser = existingUserOptional.get();
-
-                // Update the existing user with new info
-                if(updatedUser.getName() != null) existingUser.setName(updatedUser.getName());
-                if(updatedUser.getEmail() != null) existingUser.setEmail(updatedUser.getEmail());
-                if(updatedUser.getPassword() != null) existingUser.setPassword(updatedUser.getPassword());
-                // You can update other fields as needed
-
-                // Save the updated user back to the repository
-                User updatedUserResult = userRepository.save(existingUser);
+            if (updatedUserResult != null) {
                 return ResponseEntity.ok(updatedUserResult);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
