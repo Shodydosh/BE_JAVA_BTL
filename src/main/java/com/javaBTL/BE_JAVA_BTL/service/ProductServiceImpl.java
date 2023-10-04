@@ -45,16 +45,16 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findById(id).orElse(null);
     }
 
-    // Các phương thức khác cho các chức năng khác có thể được thêm vào ở đây
+    @Override
+    public List<Product> searchProducts(String keyword) {
+        // Triển khai logic tìm kiếm sản phẩm dựa trên từ khóa ở đây và trả về danh sách sản phẩm tương ứng
+        return productRepository.searchProducts(keyword);
+    }
 
-    // Ví dụ:
-    // public void loginUser(LoginRequest loginRequest) {
-    //     // Thêm logic đăng nhập ở đây
-    // }
-    // public void registerUser(RegisterRequest registerRequest) {
-    //     // Thêm logic đăng ký ở đây
-    // }
-    // public void checkout(CheckoutRequest checkoutRequest) {
-    //     // Thêm logic thanh toán và gửi email ở đây
-    // }
+
+    @Override
+    public void deleteProduct(UUID id) {
+        // Triển khai logic xóa sản phẩm theo ID ở đây
+        productRepository.deleteById(id);
+    }
 }

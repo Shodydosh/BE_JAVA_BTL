@@ -31,6 +31,12 @@ public class ProductController {
     public Product getProductById(@PathVariable UUID id) {
         return productService.getProductById(id);
     }
+    //Search product by keyword
+    @GetMapping("/search")
+    public List<Product> searchProducts(@RequestParam("keyword") String keyword) {
+        return productService.searchProducts(keyword);
+    }
+
 
     // Admin CRUD operations
     @PostMapping("/{id}")
@@ -40,9 +46,14 @@ public class ProductController {
     }
 
     // Create a new product
-    @PostMapping
+    @PostMapping ("/add")
     public Product createProduct(@RequestBody Product product) {
         return productService.createProduct(product);
     }
+    @DeleteMapping("delete/{id}")
+    public void deleteProduct(@PathVariable UUID id) {
+        productService.deleteProduct(id);
+    }
+
 
 }
