@@ -38,6 +38,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByEmail(String email) {
+        User user = userRepository.getUserByEmail(email);
+
+        if (user != null) {
+            return user;
+        } else {
+            // You can return null or throw an exception, depending on your application's requirements.
+            // For example, you can create a custom exception class for user not found.
+            return null;
+        }
+    }
+
+
+    @Override
     public User updateUser(UUID userId, User updatedUser) {
         try {
             // Find the existing user by ID
