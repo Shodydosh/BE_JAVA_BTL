@@ -1,7 +1,7 @@
 package com.javaBTL.BE_JAVA_BTL.controller;
 
 import com.javaBTL.BE_JAVA_BTL.model.User;
-import com.javaBTL.BE_JAVA_BTL.service.AuthService;
+import com.javaBTL.BE_JAVA_BTL.service.ClientAuthService;
 import com.javaBTL.BE_JAVA_BTL.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ public class AuthController {
     private UserService userService;
 
     @Autowired
-    private AuthService authService;
+    private ClientAuthService clientAuthService;
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
@@ -34,7 +34,7 @@ public class AuthController {
         }
 
         if (user.getPassword().equals(storedUser.getPassword())) {
-            String jwtToken = authService.generateJwtToken(storedUser);
+            String jwtToken = clientAuthService.generateJwtToken(storedUser);
             return ResponseEntity.ok(jwtToken);
         } else {
             return ResponseEntity.badRequest().body("Incorrect password");

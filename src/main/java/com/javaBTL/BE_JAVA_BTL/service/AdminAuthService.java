@@ -11,7 +11,7 @@ import java.security.Key;
 import java.util.Date;
 
 @Service
-public class AuthService {
+public class AdminAuthService {
 
     // Secret key for signing the JWT (make sure to keep it secure)
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
@@ -23,6 +23,7 @@ public class AuthService {
         String jwtToken = Jwts.builder()
                 .setSubject(user.getEmail()) // You can use email or another unique identifier as the subject
                 .claim("email", user.getEmail()) // Add user's email as a custom claim
+                .claim("role", user.getRole()) // Add user's role as a custom claim
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 // You can add more claims here as needed
@@ -32,7 +33,6 @@ public class AuthService {
         System.out.println("Generated JWT Token: " + jwtToken); // Print the generated token
         return jwtToken;
     }
-
 
     public String validateAndExtractEmailFromJwt(String jwtToken) {
         try {
@@ -62,4 +62,28 @@ public class AuthService {
         }
     }
 
+    public String getRole(String jwtToken) {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(SECRET_KEY)
+                    .parseClaimsJws(jwtToken)
+                    .getBody();
+
+            // Extract the role from the custom claim
+            String role = claims.get("role", String.class);
+            System.out.println("✨✨" + role + "✨✨");
+
+            // Check if the role is not null or empty
+            if (role != null && !role.isEmpty()) {
+                return role;
+            } else {
+                // Handle the case where the role claim is missing or empty
+                return null;
+            }
+        } catch (Exception e) {
+            // Token validation failed
+            // Handle the error (e.g., log it or throw an exception)
+            return null;
+        }
+    }
 }
