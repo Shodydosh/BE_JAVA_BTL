@@ -35,8 +35,7 @@ public class AuthController {
 
         if (user.getPassword().equals(storedUser.getPassword())) {
             String jwtToken = authService.generateJwtToken(storedUser);
-//            String jwtToken = "123";
-            return ResponseEntity.ok("Login successful. Token: " + jwtToken);
+            return ResponseEntity.ok(jwtToken);
         } else {
             return ResponseEntity.badRequest().body("Incorrect password");
         }
