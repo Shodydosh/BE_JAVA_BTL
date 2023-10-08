@@ -29,9 +29,7 @@ public class AdminUserController {
     }
 
     @GetMapping("")
-    public ResponseEntity<User> getUserById(
-            @RequestParam("id") UUID userId
-    ) {
+    public ResponseEntity<User> getUserById(@RequestParam("id") UUID userId) {
         try {
             User user = userService.getUserById(userId);
 
