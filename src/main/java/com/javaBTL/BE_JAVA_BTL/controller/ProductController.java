@@ -36,6 +36,10 @@ public class ProductController {
     public List<Product> searchProducts(@RequestParam("keyword") String keyword) {
         return productService.searchProducts(keyword);
     }
+    @GetMapping("/category/{category}")
+    public List<Product> getProductsByCategory(@PathVariable String category) {
+        return productService.getProductsByCategory(category);
+    }
 
 
     // Admin CRUD operations
@@ -49,6 +53,10 @@ public class ProductController {
     @PostMapping ("/add")
     public Product createProduct(@RequestBody Product product) {
         return productService.createProduct(product);
+    }
+    @PostMapping("/upload")
+    public List<Product> uploadProducts(@RequestBody List<Product> products) {
+        return productService.uploadProducts(products);
     }
     @DeleteMapping("delete/{id}")
     public void deleteProduct(@PathVariable UUID id) {
