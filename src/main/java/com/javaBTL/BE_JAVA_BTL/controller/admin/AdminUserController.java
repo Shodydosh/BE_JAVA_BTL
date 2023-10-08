@@ -3,6 +3,7 @@ package com.javaBTL.BE_JAVA_BTL.controller.admin;
 import com.javaBTL.BE_JAVA_BTL.model.User;
 import com.javaBTL.BE_JAVA_BTL.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,13 +29,31 @@ public class AdminUserController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteUser(@RequestParam("id") UUID userId) {
-        // Implement code to delete a user accessible to administrators
-        return null;
+        try {
+            boolean deleted = userService.deleteUser(userId);
+
+            if (deleted) {
+                return ResponseEntity.ok("User deleted successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting user");
+        }
     }
 
     @PostMapping("/update")
     public ResponseEntity<User> updateUser(@RequestParam("id") UUID userId, @RequestBody User updatedUser) {
-        // Implement code to update a user accessible to administrators
-        return null;
+        try {
+            User updatedUserResult = userService.updateUser(userId, updatedUser);
+
+            if (updatedUserResult != null) {
+                return ResponseEntity.ok(updatedUserResult);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }

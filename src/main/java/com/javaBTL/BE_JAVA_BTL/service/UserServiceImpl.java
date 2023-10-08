@@ -88,14 +88,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(UUID userId) {
+    public boolean deleteUser(UUID userId) {
         Optional<User> existingUser = userRepository.findById(userId);
 
         if (existingUser.isPresent()) {
             userRepository.deleteById(userId);
+            return true; // Return true to indicate successful deletion
         } else {
             // Handle the case when the user with the provided ID does not exist
-            throw new IllegalArgumentException("User with ID " + userId + " does not exist.");
+            return false; // Return false to indicate that the user was not found
         }
     }
+
 }

@@ -21,8 +21,7 @@ public class ClientUserController {
 
 
     @GetMapping("")
-    public ResponseEntity<User> getUserById(
-            @RequestParam("id") UUID userId,
+    public ResponseEntity<User> getUserInfo(
             @RequestHeader("Authorization") String authorizationHeader
     ) {
         try {
@@ -35,7 +34,7 @@ public class ClientUserController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
 
-            User user = userService.getUserById(userId);
+            User user = userService.getUserByEmail(email);
             if (user != null) {
                 // Check if the retrieved user's email matches the email in the token
                 if (email.equals(user.getEmail())) {
@@ -45,7 +44,7 @@ public class ClientUserController {
                     return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
                 }
             } else {
-                System.out.println("USER NOT FOUND -> ID: " + userId);
+                System.out.println("USER NOT FOUND -> Email: " + email);
                 return ResponseEntity.notFound().build();
             }
         } catch (IllegalArgumentException e) {
@@ -54,6 +53,7 @@ public class ClientUserController {
             return ResponseEntity.badRequest().build();
         }
     }
+
 
     @PostMapping("/update")
     public ResponseEntity<User> updateUser(@RequestParam("id") UUID userId, @RequestBody User updatedUser) {
