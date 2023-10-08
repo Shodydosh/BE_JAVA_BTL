@@ -64,7 +64,7 @@ public class AdminUserController {
     @PostMapping("/update")
     public ResponseEntity<User> updateUser(@RequestParam("id") UUID userId, @RequestBody User updatedUser) {
         try {
-            User updatedUserResult = userService.updateUser(userId, updatedUser);
+            User updatedUserResult = userService.adminUpdateUser(userId, updatedUser);
 
             if (updatedUserResult != null) {
                 return ResponseEntity.ok(updatedUserResult);

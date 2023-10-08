@@ -56,17 +56,44 @@ public class ClientUserController {
 
 
     @PostMapping("/update")
-    public ResponseEntity<User> updateUser(@RequestParam("id") UUID userId, @RequestBody User updatedUser) {
+    public ResponseEntity<User> updateUser(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody User updatedUser
+    ) {
         try {
-            User updatedUserResult = userService.updateUser(userId, updatedUser);
+            // Validate the authorization header and extract email from JWT
+            String token = clientAuthService.extractTokenFromAuthorizationHeader(authorizationHeader);
+            String email = clientAuthService.validateAndExtractEmailFromJwt(token);
 
-            if (updatedUserResult != null) {
-                return ResponseEntity.ok(updatedUserResult);
+            if (email == null) {
+                // Token is invalid
+                System.out.println("INVALID TOKEN -> " + token);
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+            // Retrieve the user based on the email from the token
+            User user = userService.getUserByEmail(email);
+            if (user != null) {
+                // Update the user information
+                // You may need to implement a method in userService to update the user based on email
+                // For example, userService.updateUserByEmail(email, updatedUser);
+                // This will update the user's information based on their email
+                // Make sure to implement this method accordingly
+                User updatedUserResult = userService.updateUserByEmail(email, updatedUser);
+
+                if (updatedUserResult != null) {
+                    return ResponseEntity.ok(updatedUserResult);
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+                }
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+                System.out.println("USER NOT FOUND -> Email: " + email);
+                return ResponseEntity.notFound().build();
             }
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            // Handle the case where the provided "id" parameter is not a valid UUID
+            System.out.println("INVALID UUID -> " + e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 }

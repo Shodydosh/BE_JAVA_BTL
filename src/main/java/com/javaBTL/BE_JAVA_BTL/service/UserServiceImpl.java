@@ -3,10 +3,7 @@ package com.javaBTL.BE_JAVA_BTL.service;
 import com.javaBTL.BE_JAVA_BTL.model.User;
 import com.javaBTL.BE_JAVA_BTL.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User updateUser(UUID userId, User updatedUser) {
+    public User adminUpdateUser(UUID userId, User updatedUser) {
         try {
             // Find the existing user by ID
             Optional<User> existingUserOptional = userRepository.findById(userId);
@@ -63,9 +60,6 @@ public class UserServiceImpl implements UserService {
                 // Update the existing user with new info
                 if (updatedUser.getName() != null) {
                     existingUser.setName(updatedUser.getName());
-                }
-                if (updatedUser.getEmail() != null) {
-                    existingUser.setEmail(updatedUser.getEmail());
                 }
                 if (updatedUser.getPassword() != null) {
                     existingUser.setPassword(updatedUser.getPassword());
@@ -100,6 +94,38 @@ public class UserServiceImpl implements UserService {
         } else {
             // Handle the case when the user with the provided ID does not exist
             return false; // Return false to indicate that the user was not found
+        }
+    }
+
+    @Override
+    public User updateUserByEmail(String email, User updatedUser) {
+        try {
+            // Find the existing user by ID
+            User existingUser = userRepository.getUserByEmail(email);
+
+            if (existingUser != null) {
+                if (updatedUser.getName() != null) {
+                    existingUser.setName(updatedUser.getName());
+                }
+                if (updatedUser.getPassword() != null) {
+                    existingUser.setPassword(updatedUser.getPassword());
+                }
+                if (updatedUser.getRole() != null) {
+                    existingUser.setRole(updatedUser.getRole());
+                }
+
+                // Save the updated user back to the repository
+                User updatedUserResult = userRepository.save(existingUser);
+
+                // Return the updated user
+                return updatedUserResult;
+            } else {
+                // Throw an exception when the user with the provided ID does not exist
+                throw new IllegalArgumentException("User with email" + email + " does not exist.");
+            }
+        } catch (Exception e) {
+            // Handle other potential exceptions or log them
+            throw new RuntimeException("Error updating user with email" + email, e);
         }
     }
 
