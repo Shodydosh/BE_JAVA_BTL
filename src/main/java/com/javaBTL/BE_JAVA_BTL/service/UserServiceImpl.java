@@ -70,7 +70,9 @@ public class UserServiceImpl implements UserService {
                 if (updatedUser.getPassword() != null) {
                     existingUser.setPassword(updatedUser.getPassword());
                 }
-                // You can update other fields as needed
+                if (updatedUser.getRole() != null) {
+                    existingUser.setRole(updatedUser.getRole());
+                }
 
                 // Save the updated user back to the repository
                 User updatedUserResult = userRepository.save(existingUser);
@@ -86,6 +88,7 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Error updating user with ID " + userId, e);
         }
     }
+
 
     @Override
     public boolean deleteUser(UUID userId) {

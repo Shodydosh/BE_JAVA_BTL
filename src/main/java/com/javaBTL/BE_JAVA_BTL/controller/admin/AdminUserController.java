@@ -16,6 +16,7 @@ public class AdminUserController {
     @Autowired
     private UserService userService;
 
+
     @PostMapping("/add")
     public String add(@RequestBody User user){
         userService.saveUser(user);
@@ -27,13 +28,33 @@ public class AdminUserController {
         return userService.getAllUser();
     }
 
+    @GetMapping("")
+    public ResponseEntity<User> getUserById(
+            @RequestParam("id") UUID userId
+    ) {
+        try {
+            User user = userService.getUserById(userId);
+
+            if (user != null) {
+                return ResponseEntity.ok(user);
+            } else {
+                System.out.println("USER NOT FOUND -> ID: " + userId);
+                return ResponseEntity.notFound().build();
+            }
+        } catch (IllegalArgumentException e) {
+            // Handle the case where the provided "id" parameter is not a valid UUID
+            System.out.println("INVALID UUID -> " + e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteUser(@RequestParam("id") UUID userId) {
         try {
             boolean deleted = userService.deleteUser(userId);
 
             if (deleted) {
-                return ResponseEntity.ok("User deleted successfully");
+                return ResponseEntity.ok("User" + userId + "deleted successfully");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
             }
