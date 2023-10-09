@@ -8,6 +8,7 @@ import java.util.UUID;
 public interface ProductService {
     Product createProduct(Product product);
     Product createOrUpdateProduct(UUID id, Product product);
+    List<Product> uploadProducts(List<Product> products);
     List<Product> getAllProducts();
     List<Product> getAllLaptops();
     Product getProductById(UUID id);

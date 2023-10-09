@@ -40,6 +40,10 @@ public class ProductController {
     public List<Product> getProductsByCategory(@PathVariable String category) {
         return productService.getProductsByCategory(category);
     }
+    @PostMapping("/upload")
+    public List<Product> uploadProducts(@RequestBody List<Product> products) {
+        return productService.uploadProducts(products);
+    }
 
 
     // Admin CRUD operations
