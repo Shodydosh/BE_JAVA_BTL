@@ -44,8 +44,6 @@ public class ProductController {
     public List<Product> uploadProducts(@RequestBody List<Product> products) {
         return productService.uploadProducts(products);
     }
-
-
     // Admin CRUD operations
     @PostMapping("/{id}")
     public Product createOrUpdateProduct(@PathVariable UUID id, @RequestBody Product product) {
