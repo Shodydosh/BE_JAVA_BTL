@@ -75,4 +75,14 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getProductsByCategory(String category){
         return productRepository.getProductsByCategory(category);
     }
+    @Override
+    public void deleteAllProducts() {
+         productRepository.deleteAll();
+    }
+    @Override
+    public void deleteProductsByCategory(String category) {
+        productRepository.deleteProductsByCategory(category);
+    }
+
+
 }

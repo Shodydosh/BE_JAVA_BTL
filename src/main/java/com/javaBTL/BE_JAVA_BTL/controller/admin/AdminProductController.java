@@ -52,4 +52,13 @@ public class AdminProductController {
     public void deleteProduct(@PathVariable UUID id) {
         productService.deleteProduct(id);
     }
+    @DeleteMapping("/delete/all")
+    public void deleteAllProducts() {
+        productService.deleteAllProducts();
+    }
+    @DeleteMapping("/delete/byCategory")
+    public void deleteProductsByCategory(@RequestParam("category") String category) {
+        productService.deleteProductsByCategory(category);
+    }
+
 }
