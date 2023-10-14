@@ -10,7 +10,7 @@ import java.util.UUID;
 public class Cart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Use AUTO for UUID generation
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Use AUTO for UUID generation
     private UUID id;
 
     public Cart() {
@@ -22,9 +22,8 @@ public class Cart {
     public UUID getId() {
         return id;
     }
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
     private List<CartItem> items = new ArrayList<>();
-
     public void addItem(Product product) {
         items.add(new CartItem(product, 1));
     }
