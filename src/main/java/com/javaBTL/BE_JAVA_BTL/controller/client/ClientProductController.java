@@ -1,4 +1,4 @@
-package com.javaBTL.BE_JAVA_BTL.controller;
+package com.javaBTL.BE_JAVA_BTL.controller.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/product")
-public class ProductController {
+@RequestMapping("/client/api/product")
+public class ClientProductController {
 
     @Autowired
     private ProductService productService;
@@ -40,7 +40,5 @@ public class ProductController {
     public List<Product> getProductsByCategory(@PathVariable String category) {
         return productService.getProductsByCategory(category);
     }
-
-
 
 }

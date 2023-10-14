@@ -8,10 +8,13 @@ import java.util.UUID;
 public interface UserService {
     User saveUser(User user);
 
+//  ADMIN
     List<User> getAllUser();
     User getUserById(UUID userId);
+    User getUserByEmail(String email);
+    User adminUpdateUser(UUID userId, User user);
+    boolean deleteUser(UUID userId);
 
-    User updateUser(UUID userId, User user);
-
-    void deleteUser(UUID userId);
+//  CLIENT
+    User updateUserByEmail(String email, User updatedUser);
 }
