@@ -53,4 +53,8 @@ public class CartItem implements Serializable {
     public int getQuantity() {
         return quantity;
     }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
 }

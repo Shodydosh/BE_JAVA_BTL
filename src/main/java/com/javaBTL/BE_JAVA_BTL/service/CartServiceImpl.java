@@ -4,11 +4,15 @@ import com.javaBTL.BE_JAVA_BTL.repository.CartItemRepository;
 import com.javaBTL.BE_JAVA_BTL.repository.CartRepository;
 import com.javaBTL.BE_JAVA_BTL.model.Cart;
 import com.javaBTL.BE_JAVA_BTL.model.Product;
+import com.javaBTL.BE_JAVA_BTL.model.CartItem;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -44,20 +48,35 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public void addItemToCart(Cart cart, Product product) {
         if (cart == null) {
             cart = createCart(); // Create a new cart if it doesn't exist
         }
-        cart.addItem(product); // This method should correctly add the product to the cart
-        cartRepository.save(cart);
+
+        // Check if the product is already in the cart
+        Optional<CartItem> existingItem = cart.getItems().stream()
+                .filter(item -> item.getProduct().getId().equals(product.getId()))
+                .findFirst();
+
+        if (existingItem.isPresent()) {
+            // Update the quantity of the existing cart item
+            CartItem cartItem = existingItem.get();
+            cartItem.setQuantity(cartItem.getQuantity() + 1);
+        } else {
+            // Add a new cart item for the product
+            CartItem cartItem = new CartItem(product, 1);
+            cartItem.setCart(cart); // Set the cart for the cart item
+            cart.getItems().add(cartItem);
+        }
+
+        cartRepository.save(cart); // Save the updated cart
     }
 
     @Override
     public void updateItemQuantity(Cart cart, UUID productId, int newQuantity) {
-        cart.updateProductQuantity(productId, newQuantity);
-        cartRepository.save(cart);
-    }
 
+    }
 
 
     @Override

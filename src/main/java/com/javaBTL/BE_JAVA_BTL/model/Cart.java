@@ -79,4 +79,8 @@ public class Cart {
     public void removeItem(UUID productId) {
         items.removeIf(item -> item.getProduct().getId().equals(productId));
     }
+
+    public void setItems(ArrayList<CartItem> arrayList) {
+        items = arrayList;
+    }
 }
