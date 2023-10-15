@@ -29,9 +29,9 @@ public class CartController {
         cartService.clearCart(cartService.getCart());
     }
 
-    @GetMapping("/items")
-    public List<CartItem> getAllItems() {
-        return cartService.getAllItems(cartService.getCart());
+    @GetMapping("/items/{cartId}")
+    public List<CartItem> getAllItems(  @PathVariable UUID cartId) {
+        return cartService.getAllItems( cartService.getCart());
     }
 
     @GetMapping("/count")

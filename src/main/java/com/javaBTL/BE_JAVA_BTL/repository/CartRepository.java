@@ -15,6 +15,9 @@ import java.util.UUID;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, UUID> {
 
+    @Query("SELECT c.id FROM Cart c WHERE c.id = :id")
+    List<Cart> getAllCart();
+
 
 }
 
