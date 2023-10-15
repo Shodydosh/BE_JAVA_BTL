@@ -7,6 +7,7 @@ import com.javaBTL.BE_JAVA_BTL.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,8 +21,16 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart getCart() {
-        return cartRepository.findAll().get(0);
+        List<Cart> carts = cartRepository.findAll();
+        if (!carts.isEmpty()) {
+            return carts.get(0);
+        } else {
+            Cart cart = createCart();
+            cartRepository.save(cart);
+            return cart;
+        }
     }
+
 
     @Override
     public Cart createCart() {
@@ -36,7 +45,10 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void addItemToCart(Cart cart, Product product) {
-        cart.addItem(product);
+        if (cart == null) {
+            cart = createCart(); // Create a new cart if it doesn't exist
+        }
+        cart.addItem(product); // This method should correctly add the product to the cart
         cartRepository.save(cart);
     }
 
@@ -46,25 +58,27 @@ public class CartServiceImpl implements CartService {
         cartRepository.save(cart);
     }
 
-    @Override
-    public void removeItemFromCart(Cart cart, UUID productId) {
-        cart.removeItem(productId);
-        cartRepository.save(cart);
-    }
+
 
     @Override
     public double calculateTotal(Cart cart) {
-        return cart.getTotal();
-    }
+        BigDecimal sum = BigDecimal.ZERO; // Initialize the sum as BigDecimal.ZERO
+        for (CartItem item : cart.getItems()) {
 
+                BigDecimal price = new BigDecimal(item.getProduct().getPrice());
+                BigDecimal quantity = BigDecimal.valueOf(item.getQuantity());
+                sum = sum.add(price.multiply(quantity));
+        }
+        return sum.doubleValue(); // Convert the BigDecimal sum to a double for the return value
+    }
     @Override
     public void clearCart(Cart cart) {
-        cart.clearCart();
+        cartRepository.deleteAll();
         cartRepository.save(cart);
     }
 
     @Override
     public int getCartItemCount(Cart cart) {
-        return cart.getCount();
+        return cart.getItems().size();
     }
 }

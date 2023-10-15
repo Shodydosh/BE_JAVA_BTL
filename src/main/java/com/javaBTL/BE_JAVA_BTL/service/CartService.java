@@ -17,7 +17,6 @@ public interface CartService {
 
     void updateItemQuantity(Cart cart, UUID productId, int newQuantity);
 
-    void removeItemFromCart(Cart cart, UUID productId);
 
     double calculateTotal(Cart cart);
 

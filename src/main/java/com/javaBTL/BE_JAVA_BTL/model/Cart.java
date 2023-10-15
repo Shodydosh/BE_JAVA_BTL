@@ -25,7 +25,14 @@ public class Cart {
     }
 
     public void addItem(Product product) {
+
         // Check if the product is already in the cart
+
+        if (items.stream().anyMatch(item -> item.getProduct().getId().equals(product.getId()))) {
+            updateItemQuantity(product, items.stream().filter(item -> item.getProduct().getId().equals(product.getId())).findFirst().get().getQuantity() + 1);
+        }
+
+        // Add the product to the cart
         for (CartItem item : items) {
             if (item.getProduct().getId().equals(product.getId())) {
                 item.setQuantity(item.getQuantity() + 1);
