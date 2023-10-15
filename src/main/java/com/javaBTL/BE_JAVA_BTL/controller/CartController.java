@@ -20,36 +20,32 @@ public class CartController {
     public Cart getCart() {
         return cartService.getCart();
     }
-
     @PostMapping("/add")
     public void addToCart(@RequestBody Product product) {
-        cartService.addToCart(product);
+        cartService.addItemToCart(cartService.getCart(), product);
     }
-
-
-
     @PutMapping("/update/{productId}")
     public void updateProductQuantity(@PathVariable UUID productId, @RequestParam int newQuantity) {
-        cartService.updateProductQuantity(productId, newQuantity);
+        cartService.updateItemQuantity(cartService.getCart(),productId, newQuantity);
     }
 
     @DeleteMapping("/clear")
     public void clearCart() {
-        cartService.clearCart();
+        cartService.clearCart(cartService.getCart());
     }
 
     @GetMapping("/items")
     public List<CartItem> getAllItems() {
-        return cartService.getAllItems();
+        return cartService.getAllCart();
     }
 
     @GetMapping("/count")
     public int getCount() {
-        return cartService.getCount();
+        return cartService.getCartItemCount(cartService.getCart());
     }
 
     @GetMapping("/total")
     public Double getTotal() {
-        return cartService.getTotal();
+        return cartService.calculateTotal( cartService.getCart());
     }
 }

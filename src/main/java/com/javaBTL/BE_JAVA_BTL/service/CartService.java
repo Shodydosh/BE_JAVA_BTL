@@ -11,15 +11,17 @@ public interface CartService {
 
     Cart getCart();
 
-    void addToCart(Product product);
+    Cart createCart();
+    List<CartItem> getAllCart();
+    void addItemToCart(Cart cart, Product product);
 
-    void updateProductQuantity(UUID productId, int newQuantity);
+    void updateItemQuantity(Cart cart, UUID productId, int newQuantity);
 
-    void clearCart();
+    void removeItemFromCart(Cart cart, UUID productId);
 
-    List<CartItem> getAllItems();
+    double calculateTotal(Cart cart);
 
-    int getCount();
+    void clearCart(Cart cart);
 
-    Double getTotal();
+    int getCartItemCount(Cart cart);
 }

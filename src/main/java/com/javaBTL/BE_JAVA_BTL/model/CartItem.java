@@ -1,30 +1,39 @@
 package com.javaBTL.BE_JAVA_BTL.model;
 
 import jakarta.persistence.*;
-
 import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
 public class CartItem implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @OneToOne // Use @OneToOne if each cart item is associated with one product
+    @OneToOne
     private Product product;
 
     private int quantity;
 
-    public CartItem() {
-        this.id = UUID.randomUUID();
-    }
+    @ManyToOne // Sử dụng @ManyToOne để định nghĩa quan hệ với thực thể Cart
+    @JoinColumn(name = "cart_id") // Định nghĩa khóa ngoại (foreign key) tới Cart
+    private Cart cart; // Thêm trường cart để thiết lập quan hệ ngược lại
 
     public CartItem(Product product, int quantity) {
-        this.id = UUID.randomUUID();
         this.product = product;
         this.quantity = quantity;
     }
 
+    // Getters và setters
+
+    public double getTotal() {
+        // Assuming that "getPrice" returns a numeric value (e.g., a double or BigDecimal)
+        return Double.parseDouble(product.getPrice()) * quantity;
+    }
+
+    public void setQuantity(int newQuantity) {
+        this.quantity = newQuantity;
+    }
     public UUID getId() {
         return id;
     }
@@ -43,13 +52,5 @@ public class CartItem implements Serializable {
 
     public int getQuantity() {
         return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public double getTotal() {
-        return Double.parseDouble(product.getPrice()) * quantity;
     }
 }

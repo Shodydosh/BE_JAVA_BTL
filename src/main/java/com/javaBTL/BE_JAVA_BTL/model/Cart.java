@@ -1,7 +1,6 @@
 package com.javaBTL.BE_JAVA_BTL.model;
 
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -10,30 +9,39 @@ import java.util.UUID;
 public class Cart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Use AUTO for UUID generation
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
+    private List<CartItem> items = new ArrayList<>();
 
     public Cart() {
         // Tạo một UUID mới khi tạo đối tượng Cart
-
         this.id = UUID.randomUUID();
     }
 
     public UUID getId() {
         return id;
     }
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
-    private List<CartItem> items = new ArrayList<>();
+
     public void addItem(Product product) {
+        // Check if the product is already in the cart
+        for (CartItem item : items) {
+            if (item.getProduct().getId().equals(product.getId())) {
+                item.setQuantity(item.getQuantity() + 1);
+                return;
+            }
+        }
         items.add(new CartItem(product, 1));
     }
 
     public void updateItemQuantity(Product product, int quantity) {
-        items.forEach(item -> {
+        for (CartItem item : items) {
             if (item.getProduct().getId().equals(product.getId())) {
                 item.setQuantity(quantity);
+                return;
             }
-        });
+        }
     }
 
     public void clearCart() {
@@ -44,14 +52,6 @@ public class Cart {
         return items;
     }
 
-    public void updateProductQuantity(UUID productId, int newQuantity) {
-        items.forEach(item -> {
-            if (item.getProduct().getId().equals(productId)) {
-                item.setQuantity(newQuantity);
-            }
-        });
-    }
-
     public int getCount() {
         return items.size();
     }
@@ -59,5 +59,17 @@ public class Cart {
     public Double getTotal() {
         return items.stream().mapToDouble(CartItem::getTotal).sum();
     }
-}
 
+    public void updateProductQuantity(UUID productId, int newQuantity) {
+        for (CartItem item : items) {
+            if (item.getProduct().getId().equals(productId)) {
+                item.setQuantity(newQuantity);
+                return;
+            }
+        }
+    }
+
+    public void removeItem(UUID productId) {
+        items.removeIf(item -> item.getProduct().getId().equals(productId));
+    }
+}
