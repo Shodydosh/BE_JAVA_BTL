@@ -17,87 +17,69 @@ import java.util.UUID;
 
 @Service
 public class CartServiceImpl implements CartService {
-
     @Autowired
     private CartRepository cartRepository;
     @Autowired
     private CartItemRepository cartItemRepository;
-
     @Override
-    public Cart getCart() {
-        List<Cart> carts = cartRepository.findAll();
-        if (!carts.isEmpty()) {
-            return carts.get(0);
-        } else {
-            Cart cart = createCart();
-            cartRepository.save(cart);
-            return cart;
-        }
+    public void addItemToCart(Cart cart, Product product, int quantity) {
+        CartItem cartItem = new CartItem();
+        cartItem.setProduct(product);
+        cartItem.setQuantity(quantity);
+        cartItem.setCart(cart);
+        cartItemRepository.save(cartItem);
     }
-
-
-    @Override
-    public Cart createCart() {
-        Cart cart = new Cart();
-        return cartRepository.save(cart);
-    }
-
-    @Override
-    public List<CartItem> getAllCart() {
-        return cartItemRepository.findAll();
-    }
-
-    @Override
-    @Transactional
-    public void addItemToCart(Cart cart, Product product) {
-        if (cart == null) {
-            cart = createCart(); // Create a new cart if it doesn't exist
-        }
-
-        // Check if the product is already in the cart
-        Optional<CartItem> existingItem = cart.getItems().stream()
-                .filter(item -> item.getProduct().getId().equals(product.getId()))
-                .findFirst();
-
-        if (existingItem.isPresent()) {
-            // Update the quantity of the existing cart item
-            CartItem cartItem = existingItem.get();
-            cartItem.setQuantity(cartItem.getQuantity() + 1);
-        } else {
-            // Add a new cart item for the product
-            CartItem cartItem = new CartItem(product, 1);
-            cartItem.setCart(cart); // Set the cart for the cart item
-            cart.getItems().add(cartItem);
-        }
-
-        cartRepository.save(cart); // Save the updated cart
-    }
-
-    @Override
-    public void updateItemQuantity(Cart cart, UUID productId, int newQuantity) {
-
-    }
-
 
     @Override
     public double calculateTotal(Cart cart) {
-        BigDecimal sum = BigDecimal.ZERO; // Initialize the sum as BigDecimal.ZERO
-        for (CartItem item : cart.getItems()) {
+        double total = 0;
+        for (CartItem cartItem : cart.getItems()) {
 
-                BigDecimal price = new BigDecimal(item.getProduct().getPrice());
-                BigDecimal quantity = BigDecimal.valueOf(item.getQuantity());
-                sum = sum.add(price.multiply(quantity));
+            total += Double.parseDouble(cartItem.getProduct().getPrice()) * cartItem.getQuantity();
         }
-        return sum.doubleValue(); // Convert the BigDecimal sum to a double for the return value
+        return total;
+
     }
+
+    @Override
+    public CartItem createCartItem(Product product, int quantity) {
+        CartItem cartItem = new CartItem();
+        cartItem.setProduct(product);
+        cartItem.setQuantity(quantity);
+        return cartItemRepository.save(cartItem);
+    }
+
+    @Override
+    public CartItem updateItemQuantity(Cart cart, UUID productId, int newQuantity) {
+        Optional<CartItem> optionalCartItem = cartItemRepository.findById(productId);
+        if (optionalCartItem.isPresent()) {
+            CartItem cartItem = optionalCartItem.get();
+            cartItem.setQuantity(newQuantity);
+            return cartItemRepository.save(cartItem);
+        }
+        return null;
+    }
+
+    @Override
+    public List<CartItem> getAllItems(Cart cart) {
+        return cartItemRepository.getAllItems(cart.getId());
+    }
+
+    @Override
+    public List<Cart> getAllCart() {
+        return cartRepository.findAll();
+    }
+
     @Override
     public void clearCart(Cart cart) {
-        cartRepository.deleteAll();
-        cartRepository.save(cart);
+        cartItemRepository.deleteAll();
     }
-
     @Override
     public int getCartItemCount(Cart cart) {
-        return cart.getItems().size();
+        return (int) cartItemRepository.count();
+    }
+    @Override
+    public Cart getCart() {
+        return cartRepository.findAll().get(0);
     }
 }

@@ -9,18 +9,21 @@ import java.util.UUID;
 
 public interface CartService {
 
-    Cart getCart();
+    CartItem createCartItem(Product product, int quantity);
 
-    Cart createCart();
-    List<CartItem> getAllCart();
-    void addItemToCart(Cart cart, Product product);
+    CartItem updateItemQuantity(Cart cart, UUID productId, int newQuantity);
 
-    void updateItemQuantity(Cart cart, UUID productId, int newQuantity);
+    List<CartItem> getAllItems(Cart cart);
 
-
-    double calculateTotal(Cart cart);
+    List<Cart> getAllCart();
 
     void clearCart(Cart cart);
 
+    void addItemToCart(Cart cart, Product product, int quantity);
+
+    double calculateTotal(Cart cart);
+
     int getCartItemCount(Cart cart);
+
+    Cart getCart();
 }

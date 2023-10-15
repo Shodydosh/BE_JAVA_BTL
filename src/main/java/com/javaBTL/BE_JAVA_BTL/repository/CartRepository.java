@@ -15,9 +15,7 @@ import java.util.UUID;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, UUID> {
 
-    @Modifying
-    @Query("UPDATE Cart c SET c.items = :cartItems WHERE c.id = :cartId")
-    void addItemToCart(@Param("cartItems") List<CartItem> cartItems, @Param("cartId") UUID cartId);
+
 }
 
 
