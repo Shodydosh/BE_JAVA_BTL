@@ -21,65 +21,10 @@ public class CartServiceImpl implements CartService {
     private CartRepository cartRepository;
     @Autowired
     private CartItemRepository cartItemRepository;
-    @Override
-    public void addItemToCart(Cart cart, Product product, int quantity) {
-        CartItem cartItem = new CartItem();
-        cartItem.setProduct(product);
-        cartItem.setQuantity(quantity);
-        cartItem.setCart(cart);
-        cartItemRepository.save(cartItem);
-    }
-
-    @Override
-    public double calculateTotal(Cart cart) {
-        double total = 0;
-        for (CartItem cartItem : cart.getItems()) {
-
-            total += Double.parseDouble(cartItem.getProduct().getPrice()) * cartItem.getQuantity();
-        }
-        return total;
-
-    }
-
-    @Override
-    public CartItem createCartItem(Product product, int quantity) {
-        CartItem cartItem = new CartItem();
-        cartItem.setProduct(product);
-        cartItem.setQuantity(quantity);
-        return cartItemRepository.save(cartItem);
-    }
-
-    @Override
-    public CartItem updateItemQuantity(Cart cart, UUID productId, int newQuantity) {
-        Optional<CartItem> optionalCartItem = cartItemRepository.findById(productId);
-        if (optionalCartItem.isPresent()) {
-            CartItem cartItem = optionalCartItem.get();
-            cartItem.setQuantity(newQuantity);
-            return cartItemRepository.save(cartItem);
-        }
-        return null;
-    }
-
-    @Override
-    public List<CartItem> getAllItems(Cart cart) {
-        return cartItemRepository.getAllItems(cart.getId());
-    }
 
     @Override
     public List<Cart> getAllCart() {
         return cartRepository.findAll();
     }
 
-    @Override
-    public void clearCart(Cart cart) {
-        cartItemRepository.deleteAll();
-    }
-    @Override
-    public int getCartItemCount(Cart cart) {
-        return (int) cartItemRepository.count();
-    }
-    @Override
-    public Cart getCart() {
-        return cartRepository.findAll().get(0);
-    }
 }
