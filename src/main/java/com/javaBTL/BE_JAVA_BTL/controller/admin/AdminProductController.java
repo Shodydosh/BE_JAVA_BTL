@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/admin/api/product")
+@RequestMapping("/api/admin/product")
 public class AdminProductController {
 
     @Autowired
