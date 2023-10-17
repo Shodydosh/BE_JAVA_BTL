@@ -2,6 +2,7 @@ package com.javaBTL.BE_JAVA_BTL.controller;
 
 import com.javaBTL.BE_JAVA_BTL.model.Cart;
 import com.javaBTL.BE_JAVA_BTL.model.CartItem;
+import com.javaBTL.BE_JAVA_BTL.model.CartItemInfo;
 import com.javaBTL.BE_JAVA_BTL.model.Product;
 import com.javaBTL.BE_JAVA_BTL.service.CartItemService;
 import com.javaBTL.BE_JAVA_BTL.service.CartService;
@@ -31,7 +32,7 @@ public class CartItemController {
     }
 
     @GetMapping("/items/{cartId}")
-    public List<Product> getAllItems(@PathVariable UUID cartId) {
+    public List<CartItemInfo> getAllItems(@PathVariable UUID cartId) {
         return cartItemService.getAllItems(cartId);
     }
 

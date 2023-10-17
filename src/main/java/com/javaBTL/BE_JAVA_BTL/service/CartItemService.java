@@ -1,5 +1,6 @@
 package com.javaBTL.BE_JAVA_BTL.service;
 import com.javaBTL.BE_JAVA_BTL.model.CartItem;
+import com.javaBTL.BE_JAVA_BTL.model.CartItemInfo;
 import com.javaBTL.BE_JAVA_BTL.model.Product;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface CartItemService {
 
     CartItem updateItemQuantity(UUID cartId, UUID productId, int newQuantity);
 
-    List<Product> getAllItems(UUID cartId);
+    List<CartItemInfo> getAllItems(UUID cartId);
 
     Product getItembyID(UUID cartId, UUID productId);
 
