@@ -18,9 +18,16 @@ public class AdminUserController {
 
 
     @PostMapping("/add")
-    public String add(@RequestBody User user){
-        userService.saveUser(user);
-        return "User added successfully";
+    public ResponseEntity<String> add(@RequestBody User user){
+        User storedUser = userService.getUserByEmail(user.getEmail());
+        if (storedUser == null) {
+            User savedUser = userService.saveUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("User " + savedUser.getId() + " added successfully");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User with this email has been created");
+        }
     }
 
     @GetMapping("/all")

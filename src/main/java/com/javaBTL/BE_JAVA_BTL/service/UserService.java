@@ -10,6 +10,9 @@ public interface UserService {
 
 //  ADMIN
     List<User> getAllUser();
+
+    User addNewUser(User user);
+
     User getUserById(UUID userId);
     User getUserByEmail(String email);
     User adminUpdateUser(UUID userId, User user);
