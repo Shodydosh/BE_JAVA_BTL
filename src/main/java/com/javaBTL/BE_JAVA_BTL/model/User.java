@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 
 import java.util.UUID; // Import the UUID class
 
@@ -16,9 +17,13 @@ public class User {
     private String email;
     private String password; // Add password field
     private String role;
+    private LocalDateTime createdDate;
+    private LocalDateTime lastModifiedDate;
 
     public User() {
         this.role = "client"; // Set the default role to "client" in the constructor
+        this.createdDate = LocalDateTime.now();
+        this.lastModifiedDate = LocalDateTime.now();
     }
 
     public UUID getId() {
@@ -59,5 +64,21 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 }

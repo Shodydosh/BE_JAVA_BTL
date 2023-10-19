@@ -15,6 +15,7 @@ public class Product {
     private String url;
     private String category;
 
+
     public Product() {
         // Tạo một UUID mới khi tạo đối tượng Product
         this.id = UUID.randomUUID();
