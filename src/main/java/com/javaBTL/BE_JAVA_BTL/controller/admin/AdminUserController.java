@@ -53,6 +53,7 @@ public class AdminUserController {
         }
     }
 
+    @CrossOrigin
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteUser(@RequestParam("id") UUID userId) {
         try {
