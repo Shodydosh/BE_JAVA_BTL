@@ -20,9 +20,15 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
-        User savedUser = userService.saveUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body("User " + savedUser.getId() + " added successfully");
+        User storedUser = userService.getUserByEmail(user.getEmail());
+        if (storedUser == null) {
+            User savedUser = userService.saveUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("User " + savedUser.getId() + " added successfully");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User with this email has been created");
+        }
     }
 
     @PostMapping("/login")

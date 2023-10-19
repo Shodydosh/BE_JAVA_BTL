@@ -25,6 +25,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User addNewUser(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
     public User getUserById(UUID userId) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
