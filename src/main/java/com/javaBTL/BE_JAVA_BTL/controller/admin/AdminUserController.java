@@ -69,6 +69,7 @@ public class AdminUserController {
         }
     }
 
+    @CrossOrigin
     @PostMapping("/update")
     public ResponseEntity<User> updateUser(@RequestParam("id") UUID userId, @RequestBody User updatedUser) {
         try {
