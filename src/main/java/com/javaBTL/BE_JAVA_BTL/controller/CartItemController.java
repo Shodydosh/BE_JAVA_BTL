@@ -1,53 +1,57 @@
 package com.javaBTL.BE_JAVA_BTL.controller;
-
-import com.javaBTL.BE_JAVA_BTL.model.Cart;
 import com.javaBTL.BE_JAVA_BTL.model.CartItem;
-import com.javaBTL.BE_JAVA_BTL.model.CartItemInfo;
 import com.javaBTL.BE_JAVA_BTL.model.Product;
 import com.javaBTL.BE_JAVA_BTL.service.CartItemService;
-import com.javaBTL.BE_JAVA_BTL.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/cartitem")
+@RequestMapping("/api/cartitems")
 public class CartItemController {
+
+    private final CartItemService cartItemService;
+
     @Autowired
-    private CartItemService cartItemService;
-
-    // Thêm cartId vào các phương thức
-
-    @PostMapping("/add/{cartId}")
-    public void addToCart(@PathVariable UUID cartId, @RequestBody Product product) {
-        cartItemService.addItem(cartId, product, 1);
+    public CartItemController(CartItemService cartItemService) {
+        this.cartItemService = cartItemService;
     }
 
-    @PutMapping("/update/{cartId}/{productId}")
-    public void updateProductQuantity(@PathVariable UUID cartId, @PathVariable UUID productId, @RequestParam int newQuantity) {
-        cartItemService.updateItemQuantity(cartId, productId, newQuantity);
+    // Thêm sản phẩm vào giỏ hàng
+    @PostMapping("/add")
+    public ResponseEntity<CartItem> addCartItem(@RequestBody Product product,@RequestBody int quantity) {
+        CartItem cartItem = cartItemService.addToCart(product,quantity);
+        return ResponseEntity.ok(cartItem);
     }
 
-    @GetMapping("/items/{cartId}")
-    public List<CartItemInfo> getAllItems(@PathVariable UUID cartId) {
-        return cartItemService.getAllItems(cartId);
+    // Sửa số lượng sản phẩm trong giỏ hàng
+    @PutMapping("/update/{cartItemId}")
+    public ResponseEntity<CartItem> updateCartItem(@PathVariable UUID cartItemId, @RequestBody CartItem cartItem) {
+        CartItem updatedCartItem = cartItemService.updateCartItem(cartItemId, cartItem);
+        return ResponseEntity.ok(updatedCartItem);
     }
 
-    @GetMapping("/count/{cartId}")
-    public int getCount(@PathVariable UUID cartId) {
-        return cartItemService.getCartItemCount(cartId);
+    // Xem tất cả sản phẩm trong giỏ hàng
+    @GetMapping("/all")
+    public ResponseEntity<List<CartItem>> getAllCartItems() {
+        List<CartItem> cartItems = cartItemService.getAllCartItems();
+        return ResponseEntity.ok(cartItems);
     }
 
-    @GetMapping("/total/{cartId}")
-    public Double getTotal(@PathVariable UUID cartId) {
-        return cartItemService.calculateTotal(cartId);
+    // Tính tổng số tiền sản phẩm trong giỏ hàng
+    @GetMapping("/total")
+    public ResponseEntity<Double> calculateTotalPrice() {
+        double totalPrice = cartItemService.calculateTotalPrice();
+        return ResponseEntity.ok(totalPrice);
     }
 
-    @DeleteMapping("/clear/{cartId}")
-    public void clearCart(@PathVariable UUID cartId) {
-        cartItemService.clearCart(cartId);
+    // Xóa sản phẩm khỏi giỏ hàng
+    @DeleteMapping("/remove/{cartItemId}")
+    public ResponseEntity<String> removeCartItem(@PathVariable UUID cartItemId) {
+        cartItemService.removeCartItem(cartItemId);
+        return ResponseEntity.ok("CartItem removed from cart.");
     }
 }

@@ -1,12 +1,17 @@
 package com.javaBTL.BE_JAVA_BTL.controller;
 
 import com.javaBTL.BE_JAVA_BTL.model.User;
+import com.javaBTL.BE_JAVA_BTL.model.Cart;
+import com.javaBTL.BE_JAVA_BTL.repository.CartRepository;
 import com.javaBTL.BE_JAVA_BTL.service.ClientAuthService;
 import com.javaBTL.BE_JAVA_BTL.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping("/api/auth")
@@ -17,18 +22,16 @@ public class AuthController {
 
     @Autowired
     private ClientAuthService clientAuthService;
+    @Autowired
+    private CartRepository CartRepository;
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
-        User storedUser = userService.getUserByEmail(user.getEmail());
-        if (storedUser == null) {
-            User savedUser = userService.saveUser(user);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body("User " + savedUser.getId() + " added successfully");
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User with this email has been created");
-        }
+        Cart Cart = new Cart(user);
+        CartRepository.save(Cart);
+        User savedUser = userService.saveUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body("User " + savedUser.getId() + " added successfully");
     }
 
     @PostMapping("/login")

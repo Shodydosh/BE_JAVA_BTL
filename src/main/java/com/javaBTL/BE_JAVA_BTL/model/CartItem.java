@@ -9,22 +9,25 @@ public class CartItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    @OneToOne
+
+    @ManyToOne
     private Product product;
+
+    @ManyToOne
+    private Cart cart;
+
     private int quantity;
 
-    @ManyToOne // Sử dụng @ManyToOne để định nghĩa quan hệ với thực thể Cart
-    @JoinColumn(name = "cart_id") // Định nghĩa khóa ngoại (foreign key) tới Cart
-    private Cart cart; // Thêm trường cart để thiết lập quan hệ ngược lại
-
     public CartItem() {
+        // Tạo một UUID mới khi tạo đối tượng CartItem
         this.id = UUID.randomUUID();
     }
+
     public CartItem(Product product, int quantity) {
+        this.id = UUID.randomUUID();
         this.product = product;
         this.quantity = quantity;
     }
-
 
     public UUID getId() {
         return id;
@@ -38,23 +41,23 @@ public class CartItem implements Serializable {
         return product;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Cart getCart() {
         return cart;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
     }
 }

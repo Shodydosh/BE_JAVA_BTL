@@ -11,11 +11,18 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
-    private List<CartItem> items = new ArrayList<>();
+
+    @OneToOne
+    private User user;
+
+    @OneToMany(mappedBy = "cart")
+    private List<CartItem> cartItems;
 
     public Cart() {
-        // Tạo một UUID mới khi tạo đối tượng Cart
+        this.id = UUID.randomUUID();
+    }
+
+    public Cart(User user) {
         this.id = UUID.randomUUID();
     }
 
@@ -27,12 +34,20 @@ public class Cart {
         this.id = id;
     }
 
-    public void setItems(List<CartItem> items) {
-        this.items = items;
+    public User getUser() {
+        return user;
     }
 
-    public List<CartItem> getItems() {
-        return items;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 
 

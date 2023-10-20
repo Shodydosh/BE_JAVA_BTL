@@ -1,14 +1,13 @@
 package com.javaBTL.BE_JAVA_BTL.service;
 
 import com.javaBTL.BE_JAVA_BTL.model.CartItem;
+import com.javaBTL.BE_JAVA_BTL.model.Product;
 import com.javaBTL.BE_JAVA_BTL.repository.CartItemRepository;
 import com.javaBTL.BE_JAVA_BTL.repository.CartRepository;
-import com.javaBTL.BE_JAVA_BTL.model.Cart;
-import com.javaBTL.BE_JAVA_BTL.model.CartItemInfo;
-import com.javaBTL.BE_JAVA_BTL.model.Product;
 import com.javaBTL.BE_JAVA_BTL.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,54 +16,54 @@ import java.util.UUID;
 public class CartItemServiceImpl implements CartItemService {
     @Autowired
     private CartItemRepository cartItemRepository;
+
     @Autowired
     private CartRepository cartRepository;
+
     @Autowired
     private ProductRepository productRepository;
+
     @Override
-    public void addItem(UUID cartId, Product product, int quantity) {
+    public CartItem addToCart(Product product, int quantity) {
         CartItem cartItem = new CartItem();
         cartItem.setProduct(product);
         cartItem.setQuantity(quantity);
-        cartItem.setCart(cartRepository.findById(cartId).orElse(null)); // Lấy giỏ hàng dựa trên cartId
-        cartItemRepository.save(cartItem);
+        return cartItemRepository.save(cartItem);
     }
 
     @Override
-    public CartItem updateItemQuantity(UUID cartId, UUID productId, int newQuantity) {
-        Optional<CartItem> optionalCartItem = cartItemRepository.findById(productId);
-        if (optionalCartItem.isPresent()) {
-            CartItem cartItem = optionalCartItem.get();
-            cartItem.setQuantity(newQuantity);
-            return cartItemRepository.save(cartItem);
+    public CartItem updateCartItem(UUID cartItemId, CartItem updatedCartItem) {
+
+        Optional<CartItem> cartItem = cartItemRepository.findById(cartItemId);
+        if (cartItem.isPresent()) {
+            CartItem item = cartItem.get();
+            item.setQuantity(updatedCartItem.getQuantity());
+            return cartItemRepository.save(item);
         }
         return null;
     }
-
     @Override
-    public List<CartItemInfo> getAllItems(UUID cartId) {
-        return cartItemRepository.getAllItems(cartId);
+    public List<CartItem> getAllCartItems() {
+        return cartItemRepository.findAll();
     }
-
     @Override
-    public Product getItembyID(UUID cartId, UUID productId) {
-        return productRepository.findById(productId).orElse(null);
+    public double calculateTotalPrice() {
+        double totalPrice = 0;
+        List<CartItem> cartItems = cartItemRepository.findAll();
+        for (CartItem item : cartItems) {
+            String priceStr = item.getProduct().getPrice();
+            priceStr = priceStr.replaceAll("[^0-9]", ""); // Loại bỏ tất cả ký tự không phải số
+            int price = Integer.parseInt(priceStr);
+            totalPrice += price * item.getQuantity();
+        }
+        return totalPrice;
     }
-
     @Override
-    public void clearCart(UUID cartId) {
-        cartItemRepository.deleteAll(cartId);
+    public void removeCartItem(UUID cartItemId) {
+        cartItemRepository.deleteById(cartItemId);
     }
-
     @Override
-    public double calculateTotal(UUID cartId) {
-        // Thêm logic tính tổng giá trị sản phẩm trong giỏ hàng dựa trên cartId
-        return 0.0; // Cần triển khai logic tính tổng thực tế ở đây
+    public boolean getCartItemById(UUID id) {
+        return cartItemRepository.findById(id).isPresent();
     }
-
-    @Override
-    public int getCartItemCount(UUID cartId) {
-        return (int) cartItemRepository.count();
-    }
-
 }

@@ -1,9 +1,6 @@
 package com.javaBTL.BE_JAVA_BTL.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.UUID; // Import the UUID class
 
@@ -16,9 +13,11 @@ public class User {
     private String email;
     private String password; // Add password field
     private String role;
-
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
     public User() {
         this.role = "client"; // Set the default role to "client" in the constructor
+        this.cart = new Cart(); // Create a new cart for the user
     }
 
     public UUID getId() {
@@ -59,5 +58,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public Cart getCart() {
+        return cart;
     }
 }
