@@ -2,6 +2,8 @@ package com.javaBTL.BE_JAVA_BTL.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 import java.util.UUID; // Import the UUID class
 
 @Entity
@@ -13,11 +15,15 @@ public class User {
     private String email;
     private String password; // Add password field
     private String role;
+    private LocalDateTime createdDate;
+    private LocalDateTime lastModifiedDate;
     @OneToOne(mappedBy = "user")
     private Cart cart;
+
     public User() {
         this.role = "client"; // Set the default role to "client" in the constructor
-        this.cart = new Cart(); // Create a new cart for the user
+        this.createdDate = LocalDateTime.now();
+        this.lastModifiedDate = LocalDateTime.now();
     }
 
     public UUID getId() {
@@ -60,11 +66,27 @@ public class User {
         this.role = role;
     }
 
-    public void setCart(Cart cart) {
-        this.cart = cart;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public LocalDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public Cart getCart() {
         return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 }

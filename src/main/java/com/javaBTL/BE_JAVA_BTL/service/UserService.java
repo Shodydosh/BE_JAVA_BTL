@@ -8,7 +8,7 @@ import java.util.UUID;
 public interface UserService {
     User saveUser(User user);
 
-//  ADMIN
+    //  ADMIN
     List<User> getAllUser();
 
     User addNewUser(User user);
@@ -18,6 +18,6 @@ public interface UserService {
     User adminUpdateUser(UUID userId, User user);
     boolean deleteUser(UUID userId);
 
-//  CLIENT
+    //  CLIENT
     User updateUserByEmail(String email, User updatedUser);
 }
