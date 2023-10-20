@@ -21,8 +21,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) {
-        userRepository.save(user);
-        Cart cart = new Cart();
+        userRepository.save(user); // tạm thời lưu user
+        Cart cart = new Cart();  // tạo 1 cart mới
         cart.setUser(user);
         user.setCart(cart);
         cartRepository.save(cart);
