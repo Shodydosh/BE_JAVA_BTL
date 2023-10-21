@@ -1,5 +1,6 @@
 package com.javaBTL.BE_JAVA_BTL.service;
 
+import com.javaBTL.BE_JAVA_BTL.model.Cart;
 import com.javaBTL.BE_JAVA_BTL.model.CartItem;
 import com.javaBTL.BE_JAVA_BTL.model.Product;
 import com.javaBTL.BE_JAVA_BTL.repository.CartItemRepository;
@@ -24,10 +25,12 @@ public class CartItemServiceImpl implements CartItemService {
     private ProductRepository productRepository;
 
     @Override
-    public CartItem addToCart(Product product, int quantity) {
+    public CartItem addToCart(UUID cartId,Product product, int quantity) {
         CartItem cartItem = new CartItem();
+        Optional<Cart> cart = cartRepository.findById(cartId);
         cartItem.setProduct(product);
         cartItem.setQuantity(quantity);
+        cartItem.setCart(cart.get());
         return cartItemRepository.save(cartItem);
     }
 

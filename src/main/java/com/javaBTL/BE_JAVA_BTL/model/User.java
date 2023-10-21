@@ -1,5 +1,6 @@
 package com.javaBTL.BE_JAVA_BTL.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ public class User {
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
     @OneToOne(mappedBy = "user")
+    @JsonBackReference
     private Cart cart;
 
     public User() {

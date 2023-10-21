@@ -19,12 +19,13 @@ import java.util.UUID;
 public class CartServiceImpl implements CartService {
     @Autowired
     private CartRepository cartRepository;
-    @Autowired
-    private CartItemRepository cartItemRepository;
-
     @Override
     public List<Cart> getAllCart() {
         return cartRepository.findAll();
+    }
+    @Override
+    public Cart findById(UUID cartId) {
+        return cartRepository.findById(cartId).orElse(null);
     }
 
 }

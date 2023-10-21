@@ -15,9 +15,9 @@ import java.util.UUID;
 public class CartController {
     @Autowired
     private CartService cartService;
-    @GetMapping
+
+    @GetMapping("/all")
     public List<Cart> getAllCart() {
         return cartService.getAllCart();
     }
-
 }

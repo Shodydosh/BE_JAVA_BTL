@@ -1,6 +1,10 @@
 package com.javaBTL.BE_JAVA_BTL.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.javaBTL.BE_JAVA_BTL.repository.CartRepository;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -15,7 +19,6 @@ public class CartItem implements Serializable {
 
     @ManyToOne
     private Cart cart;
-
     private int quantity;
 
     public CartItem() {
@@ -52,6 +55,7 @@ public class CartItem implements Serializable {
     public void setCart(Cart cart) {
         this.cart = cart;
     }
+
 
     public int getQuantity() {
         return quantity;

@@ -8,5 +8,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CartService {
+
+    Cart findById(UUID cartId);
+
     List<Cart> getAllCart();
 }

@@ -1,5 +1,6 @@
 package com.javaBTL.BE_JAVA_BTL.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +14,18 @@ public class Cart {
     private UUID id;
 
     @OneToOne
+    @JsonManagedReference
     private User user;
 
     @OneToMany(mappedBy = "cart")
     private List<CartItem> cartItems;
 
+    public Cart(UUID id) {
+        this.id = id;
+    }
     public Cart() {
         this.id = UUID.randomUUID();
     }
-
     public Cart(User user) {
         this.id = UUID.randomUUID();
     }
