@@ -23,8 +23,5 @@ public class CartController {
     public List<UUID> getAllCart() {
         return cartService.getAllCartId();
     }
-    @GetMapping("/{cartId}")
-    public List<Product> findById(@PathVariable UUID cartId) {
-        return cartItemService.findByCartId(cartId);
-    }
+
 }

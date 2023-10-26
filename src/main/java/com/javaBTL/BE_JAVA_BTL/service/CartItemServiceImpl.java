@@ -26,16 +26,32 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Override
     public CartItem addToCart(UUID cartId,Product product, int quantity) {
-        CartItem cartItem = new CartItem();
-        Optional<Cart> cart = cartRepository.findById(cartId);
-        cartItem.setProduct(product);
-        cartItem.setQuantity(quantity);
-        cartItem.setCart(cart.get());
-        return cartItemRepository.save(cartItem);
+        CartItem existingCartItem = cartItemRepository.findByCartIdAndProductId(cartId, product.getId());
+        if (existingCartItem != null) {
+            existingCartItem.setQuantity(existingCartItem.getQuantity() + quantity);
+            return cartItemRepository.save(existingCartItem);
+        }
+        else
+        {
+            CartItem cartItem = new CartItem();
+            Optional<Cart> cart = cartRepository.findById(cartId);
+            cartItem.setProduct(product);
+            cartItem.setQuantity(quantity);
+            cartItem.setCart(cart.get());
+            return cartItemRepository.save(cartItem);
+        }
     }
     @Override
     public List<Product> findByCartId(UUID cartId) {
         return cartItemRepository.findByCartId(cartId);
+    }
+    @Override
+    public void deleteByCartIdAndProductId(UUID cartId, UUID productId) {
+        CartItem cartItemToDelete = cartItemRepository.findByCartIdAndProductId(cartId, productId);
+        if (cartItemToDelete != null) {
+            UUID Id=cartItemToDelete.getId();
+            cartItemRepository.deleteById(Id);
+        }
     }
 
 }

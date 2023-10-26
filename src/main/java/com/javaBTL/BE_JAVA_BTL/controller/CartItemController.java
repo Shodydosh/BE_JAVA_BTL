@@ -42,5 +42,14 @@ public class CartItemController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("" + cartItem.getProduct().getName() + " added to cart successfully");
     }
+    @GetMapping("/{cartId}")
+    public List<Product> findById(@PathVariable UUID cartId) {
+        return cartItemService.findByCartId(cartId);
+    }
+    @DeleteMapping("/delete/{cartId}/{productId}")
+    public ResponseEntity<String> deleteCartItem(@PathVariable UUID cartId, @PathVariable UUID productId) {
+        cartItemService.deleteByCartIdAndProductId(cartId, productId);
+        return ResponseEntity.status(HttpStatus.OK).body("Deleted successfully");
+    }
 
 }
