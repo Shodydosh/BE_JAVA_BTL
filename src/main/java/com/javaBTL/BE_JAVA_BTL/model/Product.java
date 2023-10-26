@@ -11,7 +11,7 @@ public class Product {
     private String retailer;
     private String img_url;
     private String name;
-    private String price;
+    private long price;
     private String url;
     private String category;
 
@@ -53,11 +53,11 @@ public class Product {
         this.name = name;
     }
 
-    public String getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 
