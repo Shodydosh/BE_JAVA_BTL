@@ -9,13 +9,5 @@ import java.util.List;
 
 public interface CartItemService {
     CartItem addToCart(UUID cartId,Product product, int quantity);
-
-    CartItem updateCartItem(UUID cartItemId, CartItem updatedCartItem, UUID cartId);
-
-    List<CartItem> getAllCartItems(UUID cartId);
-
-    void removeCartItem(UUID cartItemId, UUID cartId);
-
-
-    boolean getCartItemById(UUID id);
+    List<Product> findByCartId(UUID cartId);
 }

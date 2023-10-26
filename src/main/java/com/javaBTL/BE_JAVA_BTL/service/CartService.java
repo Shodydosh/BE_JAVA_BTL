@@ -11,5 +11,5 @@ public interface CartService {
 
     Cart findById(UUID cartId);
 
-    List<Cart> getAllCart();
+    List<UUID> getAllCartId();
 }

@@ -20,8 +20,8 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private CartRepository cartRepository;
     @Override
-    public List<Cart> getAllCart() {
-        return cartRepository.findAll();
+    public List<UUID> getAllCartId() {
+        return cartRepository.getAllCartId();
     }
     @Override
     public Cart findById(UUID cartId) {

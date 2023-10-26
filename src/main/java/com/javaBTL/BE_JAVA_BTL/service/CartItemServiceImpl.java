@@ -33,44 +33,9 @@ public class CartItemServiceImpl implements CartItemService {
         cartItem.setCart(cart.get());
         return cartItemRepository.save(cartItem);
     }
-
     @Override
-    public CartItem updateCartItem(UUID cartItemId, CartItem updatedCartItem, UUID cartId) {
-        Optional<CartItem> cartItem = cartItemRepository.findById(cartItemId);
-        if (cartItem.isPresent()) {
-            CartItem item = cartItem.get();
-            if (item.getCart().getId().equals(cartId)) {
-                item.setQuantity(updatedCartItem.getQuantity());
-                return cartItemRepository.save(item);
-            } else {
-                throw new RuntimeException("CartItem not found in the specified Cart");
-            }
-        }
-        throw new RuntimeException("CartItem not found");
-    }
-
-    @Override
-    public List<CartItem> getAllCartItems(UUID cartId) {
+    public List<Product> findByCartId(UUID cartId) {
         return cartItemRepository.findByCartId(cartId);
     }
 
-    @Override
-    public void removeCartItem(UUID cartItemId, UUID cartId) {
-        Optional<CartItem> cartItem = cartItemRepository.findById(cartItemId);
-        if (cartItem.isPresent()) {
-            CartItem item = cartItem.get();
-            if (item.getCart().getId().equals(cartId)) {
-                cartItemRepository.delete(item);
-            } else {
-                throw new RuntimeException("CartItem not found in the specified Cart");
-            }
-        } else {
-            throw new RuntimeException("CartItem not found");
-        }
-    }
-
-    @Override
-    public boolean getCartItemById(UUID id) {
-        return cartItemRepository.findById(id).isPresent();
-    }
 }
