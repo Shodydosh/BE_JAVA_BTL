@@ -13,4 +13,6 @@ import java.util.UUID;
 public interface CartItemRepository extends JpaRepository<CartItem, UUID> {
     @Query("DELETE FROM CartItem ci WHERE ci.cart.id = :cartId")
     void deleteAll(@Param("cartId") UUID cartId);
+
+    List<CartItem> findByCartId(UUID cartId);
 }

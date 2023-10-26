@@ -44,30 +44,23 @@ public class CartItemController {
 
 
     // Sửa số lượng sản phẩm trong giỏ hàng
-    @PutMapping("/update/{cartItemId}") // cần truyền vào cartid để biết đang sửa sản phẩm nào và ở giỏ hàng nào
-    public ResponseEntity<CartItem> updateCartItem(@PathVariable UUID cartItemId, @RequestBody CartItem cartItem) {
-        CartItem updatedCartItem = cartItemService.updateCartItem(cartItemId, cartItem);
+    @PutMapping("/update/{cartId}") // cần truyền vào cartid để biết đang sửa sản phẩm nào và ở giỏ hàng nào
+    public ResponseEntity<CartItem> updateCartItem(@PathVariable UUID cartItemId, @RequestBody CartItem cartItem, UUID cartId) {
+        CartItem updatedCartItem = cartItemService.updateCartItem(cartItemId, cartItem, cartId);
         return ResponseEntity.ok(updatedCartItem);
     }
 
     // Xem tất cả sản phẩm trong giỏ hàng
-    @GetMapping("/all")  // cần truyền vào cartid để biết đang xem giỏ hàng nào
-    public ResponseEntity<List<CartItem>> getAllCartItems() {
-        List<CartItem> cartItems = cartItemService.getAllCartItems();
+    @GetMapping("/all/{cartId}")  // cần truyền vào cartid để biết đang xem giỏ hàng nào
+    public ResponseEntity<List<CartItem>> getAllCartItems(UUID cartId) {
+        List<CartItem> cartItems = cartItemService.getAllCartItems(cartId);
         return ResponseEntity.ok(cartItems);
     }
 
-    // Tính tổng số tiền sản phẩm trong giỏ hàng
-    @GetMapping("/total") // cần truyền vào cartid để biết đang xem giỏ hàng nào
-    public ResponseEntity<Double> calculateTotalPrice() {
-        double totalPrice = cartItemService.calculateTotalPrice();
-        return ResponseEntity.ok(totalPrice);
-    }
-
     // Xóa sản phẩm khỏi giỏ hàng
-    @DeleteMapping("/remove/{cartItemId}")    // truyền thêm cart id giúp biết đang xóa giỏ hàng nào
-    public ResponseEntity<String> removeCartItem(@PathVariable UUID cartItemId) {
-        cartItemService.removeCartItem(cartItemId);
+    @DeleteMapping("/remove/{cartItemId}/{cartId}")
+    public ResponseEntity<String> removeCartItem(@PathVariable UUID cartItemId, @PathVariable UUID cartId) {
+        cartItemService.removeCartItem(cartItemId, cartId);
         return ResponseEntity.ok("CartItem removed from cart.");
     }
 }

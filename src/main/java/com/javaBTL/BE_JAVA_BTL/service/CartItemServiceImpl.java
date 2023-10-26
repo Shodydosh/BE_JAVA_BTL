@@ -35,36 +35,40 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public CartItem updateCartItem(UUID cartItemId, CartItem updatedCartItem) {
-
+    public CartItem updateCartItem(UUID cartItemId, CartItem updatedCartItem, UUID cartId) {
         Optional<CartItem> cartItem = cartItemRepository.findById(cartItemId);
         if (cartItem.isPresent()) {
             CartItem item = cartItem.get();
-            item.setQuantity(updatedCartItem.getQuantity());
-            return cartItemRepository.save(item);
+            if (item.getCart().getId().equals(cartId)) {
+                item.setQuantity(updatedCartItem.getQuantity());
+                return cartItemRepository.save(item);
+            } else {
+                throw new RuntimeException("CartItem not found in the specified Cart");
+            }
         }
-        return null;
+        throw new RuntimeException("CartItem not found");
     }
+
     @Override
-    public List<CartItem> getAllCartItems() {
-        return cartItemRepository.findAll();
+    public List<CartItem> getAllCartItems(UUID cartId) {
+        return cartItemRepository.findByCartId(cartId);
     }
+
     @Override
-    public double calculateTotalPrice() {
-        double totalPrice = 0;
-        List<CartItem> cartItems = cartItemRepository.findAll();
-        for (CartItem item : cartItems) {
-            String priceStr = item.getProduct().getPrice();
-            priceStr = priceStr.replaceAll("[^0-9]", ""); // Loại bỏ tất cả ký tự không phải số
-            int price = Integer.parseInt(priceStr);
-            totalPrice += price * item.getQuantity();
+    public void removeCartItem(UUID cartItemId, UUID cartId) {
+        Optional<CartItem> cartItem = cartItemRepository.findById(cartItemId);
+        if (cartItem.isPresent()) {
+            CartItem item = cartItem.get();
+            if (item.getCart().getId().equals(cartId)) {
+                cartItemRepository.delete(item);
+            } else {
+                throw new RuntimeException("CartItem not found in the specified Cart");
+            }
+        } else {
+            throw new RuntimeException("CartItem not found");
         }
-        return totalPrice;
     }
-    @Override
-    public void removeCartItem(UUID cartItemId) {
-        cartItemRepository.deleteById(cartItemId);
-    }
+
     @Override
     public boolean getCartItemById(UUID id) {
         return cartItemRepository.findById(id).isPresent();

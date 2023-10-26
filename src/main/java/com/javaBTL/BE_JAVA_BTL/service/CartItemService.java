@@ -10,13 +10,11 @@ import java.util.List;
 public interface CartItemService {
     CartItem addToCart(UUID cartId,Product product, int quantity);
 
-    CartItem updateCartItem(UUID cartItemId, CartItem updatedCartItem);
+    CartItem updateCartItem(UUID cartItemId, CartItem updatedCartItem, UUID cartId);
 
-    List<CartItem> getAllCartItems();
+    List<CartItem> getAllCartItems(UUID cartId);
 
-    double calculateTotalPrice();
-
-    void removeCartItem(UUID cartItemId);
+    void removeCartItem(UUID cartItemId, UUID cartId);
 
 
     boolean getCartItemById(UUID id);
