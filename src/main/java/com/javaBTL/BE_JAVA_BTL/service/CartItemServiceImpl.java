@@ -53,5 +53,25 @@ public class CartItemServiceImpl implements CartItemService {
             cartItemRepository.deleteById(Id);
         }
     }
+    @Override
+    public int countItemByCartId(UUID cartId) {
+        List<CartItem> cartItems = cartItemRepository.findByCartId2(cartId);
+
+        int totalQuantity = cartItems.stream().mapToInt(CartItem::getQuantity).sum();
+
+        return totalQuantity;
+    }
+    @Override
+    public long totalPriceByCartId(UUID cartId) {
+        List<CartItem> cartItems = cartItemRepository.findByCartId2(cartId);
+
+        long totalPrice = cartItems.stream()
+                .mapToLong(cartItem -> cartItem.getProduct().getPrice() * cartItem.getQuantity())
+                .sum();
+
+        return totalPrice;
+    }
+
+
 
 }

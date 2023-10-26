@@ -46,6 +46,14 @@ public class CartItemController {
     public List<Product> findById(@PathVariable UUID cartId) {
         return cartItemService.findByCartId(cartId);
     }
+    @GetMapping("/count/{cartId}")
+    public int countItemByCartId(@PathVariable UUID cartId) {
+        return cartItemService.countItemByCartId(cartId);
+    }
+    @GetMapping("total/{cartId}")
+    public long totalPriceByCartId(@PathVariable UUID cartId) {
+        return cartItemService.totalPriceByCartId(cartId);
+    }
     @DeleteMapping("/delete/{cartId}/{productId}")
     public ResponseEntity<String> deleteCartItem(@PathVariable UUID cartId, @PathVariable UUID productId) {
         cartItemService.deleteByCartIdAndProductId(cartId, productId);

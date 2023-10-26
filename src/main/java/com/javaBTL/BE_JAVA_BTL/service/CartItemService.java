@@ -12,4 +12,8 @@ public interface CartItemService {
     List<Product> findByCartId(UUID cartId);
 
     void deleteByCartIdAndProductId(UUID cartId, UUID productId);
+
+    int countItemByCartId(UUID cartId);
+
+    long totalPriceByCartId(UUID cartId);
 }
