@@ -77,7 +77,7 @@ public class ProductServiceImpl implements ProductService {
     }
     @Override
     public void deleteAllProducts() {
-         productRepository.deleteAll();
+        productRepository.deleteAll();
     }
     @Override
     public void deleteProductsByCategory(String category) {
