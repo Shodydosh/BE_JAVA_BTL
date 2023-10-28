@@ -14,7 +14,7 @@ public interface ProductService {
     Product getProductById(UUID id);
     List<Product> searchProducts(String keyword); // Thêm phương thức cho tìm kiếm sản phẩm
     List<Product> getProductsByCategory(String category);
-    void deleteProduct(UUID id); // Thêm phương thức cho xóa sản phẩm
+    boolean deleteProduct(UUID id); // Thêm phương thức cho xóa sản phẩm
 
     void deleteAllProducts();
 

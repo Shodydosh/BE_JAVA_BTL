@@ -8,6 +8,7 @@ import com.javaBTL.BE_JAVA_BTL.repository.CartRepository;
 import com.javaBTL.BE_JAVA_BTL.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +23,12 @@ public class CartItemServiceImpl implements CartItemService {
     private CartRepository cartRepository;
 
     @Autowired
+
     private ProductRepository productRepository;
+    @CrossOrigin
 
     @Override
+
     public CartItem addToCart(UUID cartId,Product product, int quantity) {
         CartItem existingCartItem = cartItemRepository.findByCartIdAndProductId(cartId, product.getId());
         if (existingCartItem != null) {
@@ -42,17 +46,25 @@ public class CartItemServiceImpl implements CartItemService {
         }
     }
     @Override
+    @CrossOrigin
     public List<Product> findByCartId(UUID cartId) {
         return cartItemRepository.findByCartId(cartId);
     }
     @Override
-    public void deleteByCartIdAndProductId(UUID cartId, UUID productId) {
+    @CrossOrigin
+    public boolean deleteByCartIdAndProductId(UUID cartId, UUID productId) {
         CartItem cartItemToDelete = cartItemRepository.findByCartIdAndProductId(cartId, productId);
         if (cartItemToDelete != null) {
             UUID Id=cartItemToDelete.getId();
             cartItemRepository.deleteById(Id);
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
+    @CrossOrigin
     @Override
     public int countItemByCartId(UUID cartId) {
         List<CartItem> cartItems = cartItemRepository.findByCartId2(cartId);
@@ -61,6 +73,7 @@ public class CartItemServiceImpl implements CartItemService {
 
         return totalQuantity;
     }
+    @CrossOrigin
     @Override
     public long totalPriceByCartId(UUID cartId) {
         List<CartItem> cartItems = cartItemRepository.findByCartId2(cartId);

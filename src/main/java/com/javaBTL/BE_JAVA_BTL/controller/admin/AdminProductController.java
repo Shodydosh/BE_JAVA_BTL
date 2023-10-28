@@ -1,6 +1,8 @@
 package com.javaBTL.BE_JAVA_BTL.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.javaBTL.BE_JAVA_BTL.model.Product;
 import com.javaBTL.BE_JAVA_BTL.service.ProductService;
@@ -49,8 +51,14 @@ public class AdminProductController {
         }
     }
     @DeleteMapping("delete/{id}")
-    public void deleteProduct(@PathVariable UUID id) {
-        productService.deleteProduct(id);
+    public ResponseEntity<String> deleteProduct(@PathVariable UUID id) {
+        boolean deleted = productService.deleteProduct(id);
+        if (deleted) {
+            return ResponseEntity.ok("Product with ID " + id + " deleted successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        }
+
     }
     @DeleteMapping("/delete/all")
     public void deleteAllProducts() {

@@ -6,6 +6,7 @@ import com.javaBTL.BE_JAVA_BTL.repository.CartRepository;
 import com.javaBTL.BE_JAVA_BTL.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +19,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private CartRepository cartRepository;
 
-
+    @CrossOrigin
     @Override
     public User saveUser(User user) {
         userRepository.save(user); // tạm thời lưu user
@@ -28,17 +29,17 @@ public class UserServiceImpl implements UserService {
         cartRepository.save(cart);
         return userRepository.save(user);
     }
-
+    @CrossOrigin
     @Override
     public List<User> getAllUser() {
         return userRepository.findAll();
     }
-
+    @CrossOrigin
     @Override
     public User addNewUser(User user) {
         return userRepository.save(user);
     }
-
+    @CrossOrigin
     @Override
     public User getUserById(UUID userId) {
         Optional<User> userOptional = userRepository.findById(userId);
@@ -48,7 +49,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("User with ID " + userId + " not found");
         }
     }
-
+    @CrossOrigin
     @Override
     public User getUserByEmail(String email) {
         User user = userRepository.getUserByEmail(email);
@@ -62,7 +63,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
+    @CrossOrigin
     @Override
     public User adminUpdateUser(UUID userId, User updatedUser) {
         try {
@@ -98,7 +99,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
+    @CrossOrigin
     @Override
     public boolean deleteUser(UUID userId) {
         Optional<User> existingUser = userRepository.findById(userId);
@@ -111,7 +112,7 @@ public class UserServiceImpl implements UserService {
             return false; // Return false to indicate that the user was not found
         }
     }
-
+    @CrossOrigin
     @Override
     public User updateUserByEmail(String email, User updatedUser) {
         try {

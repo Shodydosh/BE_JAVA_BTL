@@ -11,7 +11,7 @@ public interface CartItemService {
     CartItem addToCart(UUID cartId,Product product, int quantity);
     List<Product> findByCartId(UUID cartId);
 
-    void deleteByCartIdAndProductId(UUID cartId, UUID productId);
+    boolean deleteByCartIdAndProductId(UUID cartId, UUID productId);
 
     int countItemByCartId(UUID cartId);
 

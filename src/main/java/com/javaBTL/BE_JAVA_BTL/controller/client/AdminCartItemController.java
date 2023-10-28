@@ -1,4 +1,4 @@
-package com.javaBTL.BE_JAVA_BTL.controller;
+package com.javaBTL.BE_JAVA_BTL.controller.client;
 import com.javaBTL.BE_JAVA_BTL.model.Cart;
 import com.javaBTL.BE_JAVA_BTL.model.CartItem;
 import com.javaBTL.BE_JAVA_BTL.model.Product;
@@ -9,17 +9,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/cartitems")
-public class CartItemController {
+@RequestMapping("client/api/cartitems")
+public class AdminCartItemController {
 
     private final CartItemService cartItemService;
     private CartService cartService;
     @Autowired
-    public CartItemController(CartItemService cartItemService, CartService cartService) {
+    public AdminCartItemController(CartItemService cartItemService, CartService cartService) {
         this.cartItemService = cartItemService;
         this.cartService = cartService; // Initialize cartService
     }
@@ -56,8 +55,13 @@ public class CartItemController {
     }
     @DeleteMapping("/delete/{cartId}/{productId}")
     public ResponseEntity<String> deleteCartItem(@PathVariable UUID cartId, @PathVariable UUID productId) {
-        cartItemService.deleteByCartIdAndProductId(cartId, productId);
-        return ResponseEntity.status(HttpStatus.OK).body("Deleted successfully");
+            boolean deleted = cartItemService.deleteByCartIdAndProductId(cartId, productId);
+            if (deleted) {
+                return ResponseEntity.ok("Product with ID " + productId + " deleted successfully");
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found in cart");
+            }
     }
 
 }

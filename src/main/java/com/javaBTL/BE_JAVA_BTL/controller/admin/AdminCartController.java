@@ -1,8 +1,5 @@
-package com.javaBTL.BE_JAVA_BTL.controller;
+package com.javaBTL.BE_JAVA_BTL.controller.admin;
 
-import com.javaBTL.BE_JAVA_BTL.model.Cart;
-import com.javaBTL.BE_JAVA_BTL.model.CartItem;
-import com.javaBTL.BE_JAVA_BTL.model.Product;
 import com.javaBTL.BE_JAVA_BTL.service.CartItemService;
 import com.javaBTL.BE_JAVA_BTL.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +9,8 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/cart")
-public class CartController {
+@RequestMapping("/admin/api/cart")
+public class AdminCartController {
     @Autowired
     private CartService cartService;
     @Autowired
