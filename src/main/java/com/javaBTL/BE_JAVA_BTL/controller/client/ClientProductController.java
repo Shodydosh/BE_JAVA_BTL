@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/client/api/product")
+@RequestMapping("/api/product")
 public class ClientProductController {
 
     @Autowired
@@ -40,5 +40,7 @@ public class ClientProductController {
     public List<Product> getProductsByCategory(@PathVariable String category) {
         return productService.getProductsByCategory(category);
     }
+
+
 
 }
