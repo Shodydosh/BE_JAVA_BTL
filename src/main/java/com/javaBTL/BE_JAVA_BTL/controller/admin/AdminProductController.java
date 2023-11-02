@@ -48,6 +48,7 @@ public class AdminProductController {
             return productService.createOrUpdateProduct(id, existingProduct);
         }
     }
+    @CrossOrigin
     @DeleteMapping("delete/{id}")
     public void deleteProduct(@PathVariable UUID id) {
         productService.deleteProduct(id);
