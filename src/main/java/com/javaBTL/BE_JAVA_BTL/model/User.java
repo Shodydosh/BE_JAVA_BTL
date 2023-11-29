@@ -1,9 +1,8 @@
 package com.javaBTL.BE_JAVA_BTL.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 import java.util.UUID; // Import the UUID class
@@ -19,6 +18,9 @@ public class User {
     private String role;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
+    @OneToOne(mappedBy = "user")
+    @JsonBackReference
+    private Cart cart;
 
     public User() {
         this.role = "client"; // Set the default role to "client" in the constructor
@@ -80,5 +82,13 @@ public class User {
 
     public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 }

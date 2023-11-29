@@ -1,6 +1,8 @@
 package com.javaBTL.BE_JAVA_BTL.service;
 
+import com.javaBTL.BE_JAVA_BTL.model.Cart;
 import com.javaBTL.BE_JAVA_BTL.model.User;
+import com.javaBTL.BE_JAVA_BTL.repository.CartRepository;
 import com.javaBTL.BE_JAVA_BTL.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,9 +16,17 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CartRepository cartRepository;
+
 
     @Override
     public User saveUser(User user) {
+        userRepository.save(user); // tạm thời lưu user
+        Cart cart = new Cart();  // tạo 1 cart mới
+        cart.setUser(user);
+        user.setCart(cart);
+        cartRepository.save(cart);
         return userRepository.save(user);
     }
 
