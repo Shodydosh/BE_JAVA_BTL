@@ -25,6 +25,7 @@ public class AdminProductController {
     }
 
     // Admin CRUD operations
+    @CrossOrigin
     @PostMapping("/{id}")
     public Product createOrUpdateProduct(@PathVariable UUID id, @RequestBody Product product) {
         // Kiểm tra xem sản phẩm với ID đã cho có tồn tại hay không
@@ -48,14 +49,20 @@ public class AdminProductController {
             return productService.createOrUpdateProduct(id, existingProduct);
         }
     }
+    @CrossOrigin
+
     @DeleteMapping("delete/{id}")
     public void deleteProduct(@PathVariable UUID id) {
         productService.deleteProduct(id);
     }
+    @CrossOrigin
+
     @DeleteMapping("/delete/all")
     public void deleteAllProducts() {
         productService.deleteAllProducts();
     }
+    @CrossOrigin
+
     @DeleteMapping("/delete/byCategory")
     public void deleteProductsByCategory(@RequestParam("category") String category) {
         productService.deleteProductsByCategory(category);
