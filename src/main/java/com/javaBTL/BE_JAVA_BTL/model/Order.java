@@ -5,6 +5,7 @@ import lombok.Data;
 import java.util.List;
 import java.util.UUID;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Data
 @Entity
@@ -18,12 +19,15 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
     private Double totalAmount;
     private String shippingAddress;
     private String phoneNumber;
+    private String customerName; // Thêm trường này
+    private String note; // Thêm trường này
     private String paymentMethod;
     private String cardNumber;
     private String cardHolder;

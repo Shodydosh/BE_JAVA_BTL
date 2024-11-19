@@ -2,6 +2,7 @@ package com.javaBTL.BE_JAVA_BTL.model;
 
 import jakarta.persistence.*;
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "order_items")
@@ -10,6 +11,7 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;

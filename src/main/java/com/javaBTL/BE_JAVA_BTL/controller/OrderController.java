@@ -3,6 +3,7 @@ package com.javaBTL.BE_JAVA_BTL.controller;
 import com.javaBTL.BE_JAVA_BTL.model.Order;
 import com.javaBTL.BE_JAVA_BTL.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,17 @@ public class OrderController {
     
     @Autowired
     private OrderService orderService;
+    @GetMapping("/all")
+    public ResponseEntity<List<Order>> getAllOrders() {
+        try {
+            List<Order> orders = orderService.getAllOrders();
+            return ResponseEntity.ok(orders);
+        } catch (Exception e) {
+            e.printStackTrace(); // Log lỗi
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
     @PostMapping("/create")
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
