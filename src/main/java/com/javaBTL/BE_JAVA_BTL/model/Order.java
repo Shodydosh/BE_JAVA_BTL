@@ -1,10 +1,12 @@
 package com.javaBTL.BE_JAVA_BTL.model;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import lombok.Data;
 import java.util.List;
 import java.util.UUID;
+import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -13,85 +15,20 @@ public class Order {
     private UUID id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
-    private Date orderDate;
-    private String status;
-    private long totalAmount;
+    private Double totalAmount;
     private String shippingAddress;
     private String phoneNumber;
+    private String paymentMethod;
+    private String cardNumber;
+    private String cardHolder;
+    private String status = "PENDING";
 
-    public Order() {
-        this.id = UUID.randomUUID();
-        this.orderDate = new Date();
-        this.status = "PENDING";
-    }
-
-    // Getters and Setters
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
-
-    public Date getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public long getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(long totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public String getShippingAddress() {
-        return shippingAddress;
-    }
-
-    public void setShippingAddress(String shippingAddress) {
-        this.shippingAddress = shippingAddress;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+    @Column(name = "created_at")
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

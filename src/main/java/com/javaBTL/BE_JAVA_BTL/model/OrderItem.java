@@ -4,25 +4,24 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
+@Table(name = "order_items")
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @ManyToOne
+    @JoinColumn(name = "order_id")
     private Order order;
 
     @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
 
-    private int quantity;
-    private long price;
+    private Integer quantity;
+    private Double price;
 
-    public OrderItem() {
-        this.id = UUID.randomUUID();
-    }
-
-    // Getters and Setters
+    // Getters and setters
     public UUID getId() {
         return id;
     }
@@ -47,19 +46,19 @@ public class OrderItem {
         this.product = product;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public long getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 }
