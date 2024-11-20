@@ -60,4 +60,8 @@ public class ShipmentServiceImpl implements ShipmentService {
         shipment.setUpdatedAt(LocalDateTime.now());
         return shipmentRepository.save(shipment);
     }
+    @Override
+    public List<Shipment> getAllShipments() {
+        return shipmentRepository.findAll();
+    }
 }

@@ -18,6 +18,10 @@ public class ShipmentController {
         this.shipmentService = shipmentService;
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<Shipment>> getAllShipments() {
+        return ResponseEntity.ok(shipmentService.getAllShipments());
+    }
     @PostMapping
     public ResponseEntity<Shipment> createShipment(@RequestBody Shipment shipment) {
         try {

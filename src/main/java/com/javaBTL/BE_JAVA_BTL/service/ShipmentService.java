@@ -12,4 +12,5 @@ public interface ShipmentService {
     Shipment getShipmentById(UUID id);
     List<Shipment> getShipmentsByOrderId(UUID orderId);
     Shipment updateShipmentStatus(UUID id, ShipmentStatus status);
+    List<Shipment> getAllShipments();
 }
