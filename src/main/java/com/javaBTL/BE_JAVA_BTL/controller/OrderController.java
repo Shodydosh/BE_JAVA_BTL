@@ -44,9 +44,14 @@ public class OrderController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable UUID userId) {
-        List<Order> orders = orderService.getOrdersByUserId(userId);
-        return ResponseEntity.ok(orders);
+    public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable String userId) {
+        try {
+            UUID userUUID = UUID.fromString(userId);
+            List<Order> orders = orderService.getOrdersByUserId(userUUID);
+            return ResponseEntity.ok(orders);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("/{id}/status")

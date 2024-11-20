@@ -96,4 +96,22 @@ public class ClientUserController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable UUID id) {
+        try {
+            User user = userService.getUserById(id);
+
+            if (user != null) {
+                return ResponseEntity.ok(user);
+            } else {
+                System.out.println("USER NOT FOUND -> ID: " + id);
+                return ResponseEntity.notFound().build();
+            }
+        } catch (IllegalArgumentException e) {
+            // Handle the case where the provided "id" parameter is not a valid UUID
+            System.out.println("INVALID UUID -> " + e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }
