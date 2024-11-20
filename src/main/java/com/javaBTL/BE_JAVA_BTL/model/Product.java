@@ -1,10 +1,14 @@
 package com.javaBTL.BE_JAVA_BTL.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import java.util.UUID;
+import jakarta.persistence.*;
+import lombok.Data;
+import java.util.*;
 
 @Entity
+@Data
 public class Product {
     @Id
     private UUID id;
@@ -15,6 +19,12 @@ public class Product {
     private String url;
     private String category;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("product")
+    private List<Rating> ratings = new ArrayList<>();
+    
+    private double averageRating;
+    private int totalRatings;
 
     public Product() {
         // Tạo một UUID mới khi tạo đối tượng Product
@@ -75,5 +85,43 @@ public class Product {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
+    }
+
+    public double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public int getTotalRatings() {
+        return totalRatings;
+    }
+
+    public void setTotalRatings(int totalRatings) {
+        this.totalRatings = totalRatings;
+    }
+
+    public void addRating(Rating rating) {
+        ratings.add(rating);
+        rating.setProduct(this);
+        updateRatingStats();
+    }
+
+    private void updateRatingStats() {
+        this.totalRatings = ratings.size();
+        this.averageRating = ratings.stream()
+            .mapToInt(Rating::getRating)
+            .average()
+            .orElse(0.0);
     }
 }
