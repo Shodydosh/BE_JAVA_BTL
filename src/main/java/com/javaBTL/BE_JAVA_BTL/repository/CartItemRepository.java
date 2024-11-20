@@ -2,7 +2,9 @@ package com.javaBTL.BE_JAVA_BTL.repository;
 
 import com.javaBTL.BE_JAVA_BTL.model.CartItem;
 import com.javaBTL.BE_JAVA_BTL.model.Product;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -19,4 +21,9 @@ public interface CartItemRepository extends JpaRepository<CartItem, UUID> {
 
     @Query("SELECT ci FROM CartItem ci WHERE ci.cart.id = :cartId")
     List<CartItem> findByCartId2(@Param("cartId") UUID cartId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM CartItem ci WHERE ci.cart.id = :cartId")
+    void deleteByCartId(@Param("cartId") UUID cartId);
 }

@@ -1,6 +1,7 @@
 package com.javaBTL.BE_JAVA_BTL.service;
 import com.javaBTL.BE_JAVA_BTL.model.CartItem;
 import com.javaBTL.BE_JAVA_BTL.repository.CartItemRepository;
+
 import com.javaBTL.BE_JAVA_BTL.repository.CartRepository;
 import com.javaBTL.BE_JAVA_BTL.model.Cart;
 import com.javaBTL.BE_JAVA_BTL.model.Product;
@@ -19,6 +20,8 @@ import java.util.UUID;
 public class CartServiceImpl implements CartService {
     @Autowired
     private CartRepository cartRepository;
+    @Autowired
+    private CartItemRepository cartItemRepository;
     @Override
     public List<UUID> getAllCartId() {
         return cartRepository.getAllCartId();
@@ -27,5 +30,12 @@ public class CartServiceImpl implements CartService {
     public Cart findById(UUID cartId) {
         return cartRepository.findById(cartId).orElse(null);
     }
+    @Override
+    public void clearCart(UUID cartId) {
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
+        cartItemRepository.deleteByCartId(cartId);
+    }
+
 
 }

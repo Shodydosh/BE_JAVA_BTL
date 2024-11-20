@@ -24,4 +24,8 @@ public class CartController {
         return cartService.getAllCartId();
     }
 
+    @DeleteMapping("/{cartId}/clear")
+    public void clearCart(@PathVariable UUID cartId) {
+        cartService.clearCart(cartId);
+    }
 }
