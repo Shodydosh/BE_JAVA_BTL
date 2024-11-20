@@ -2,6 +2,8 @@ package com.javaBTL.BE_JAVA_BTL.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.time.LocalDateTime;
@@ -22,6 +24,9 @@ public class Order {
     @JsonManagedReference
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<Shipment> shipments = new ArrayList<>();
 
     private Double totalAmount;
     private String shippingAddress;
