@@ -1,5 +1,6 @@
 package com.javaBTL.BE_JAVA_BTL.service.impl;
 
+import com.javaBTL.BE_JAVA_BTL.model.OrderItem;
 import com.javaBTL.BE_JAVA_BTL.model.Shipment;
 import com.javaBTL.BE_JAVA_BTL.model.ShipmentStatus;
 import com.javaBTL.BE_JAVA_BTL.repository.ShipmentRepository;
@@ -63,5 +64,11 @@ public class ShipmentServiceImpl implements ShipmentService {
     @Override
     public List<Shipment> getAllShipments() {
         return shipmentRepository.findAll();
+    }
+
+    @Override
+    public List<OrderItem> getShipmentItems(UUID id) {
+        Shipment shipment = getShipmentById(id);
+        return shipment.getOrder().getOrderItems();
     }
 }

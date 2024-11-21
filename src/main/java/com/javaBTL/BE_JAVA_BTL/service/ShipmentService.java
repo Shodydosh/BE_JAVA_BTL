@@ -1,5 +1,6 @@
 package com.javaBTL.BE_JAVA_BTL.service;
 
+import com.javaBTL.BE_JAVA_BTL.model.OrderItem;
 import com.javaBTL.BE_JAVA_BTL.model.Shipment;
 import com.javaBTL.BE_JAVA_BTL.model.ShipmentStatus;
 import java.util.List;
@@ -13,4 +14,6 @@ public interface ShipmentService {
     List<Shipment> getShipmentsByOrderId(UUID orderId);
     Shipment updateShipmentStatus(UUID id, ShipmentStatus status);
     List<Shipment> getAllShipments();
+
+    List<OrderItem> getShipmentItems(UUID id);
 }

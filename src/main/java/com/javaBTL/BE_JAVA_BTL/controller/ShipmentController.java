@@ -1,5 +1,6 @@
 package com.javaBTL.BE_JAVA_BTL.controller;
 
+import com.javaBTL.BE_JAVA_BTL.model.OrderItem;
 import com.javaBTL.BE_JAVA_BTL.model.Shipment;
 import com.javaBTL.BE_JAVA_BTL.model.ShipmentStatus;
 import com.javaBTL.BE_JAVA_BTL.service.ShipmentService;
@@ -57,4 +58,15 @@ public class ShipmentController {
     public ResponseEntity<Shipment> updateStatus(@PathVariable UUID id, @RequestBody ShipmentStatus status) {
         return ResponseEntity.ok(shipmentService.updateShipmentStatus(id, status));
     }
+    @GetMapping("/{id}/items")
+    public ResponseEntity<List<OrderItem>>  getShipmentItems(@PathVariable UUID id) {
+        return ResponseEntity.ok(shipmentService.getShipmentItems(id));
+    }
+
+@GetMapping("/{shipmentId}/order-id")
+public String getOrderIdByShipmentId(@PathVariable UUID shipmentId) {
+    Shipment shipment = shipmentService.getShipmentById(shipmentId);
+    return shipment.getOrder().getId().toString();
+
+}
 }
