@@ -1,6 +1,6 @@
 package com.javaBTL.BE_JAVA_BTL.repository;
 
-import com.javaBTL.BE_JAVA_BTL.model.Product;
+import com.javaBTL.BE_JAVA_BTL.model.product.Product;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
