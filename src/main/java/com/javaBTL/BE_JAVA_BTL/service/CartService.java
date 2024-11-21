@@ -14,4 +14,6 @@ public interface CartService {
     List<UUID> getAllCartId();
 
     void clearCart(UUID cartId);
+
+    Cart getCartByUserId(UUID userId);
 }

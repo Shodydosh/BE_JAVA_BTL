@@ -96,7 +96,17 @@ public class ClientUserController {
             return ResponseEntity.badRequest().build();
         }
     }
+    @GetMapping("/email/{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        User user = userService.getUserByEmail(email);
 
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            System.out.println("USER NOT FOUND -> Email: " + email);
+            return ResponseEntity.notFound().build();
+        }
+    }
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable UUID id) {
         try {

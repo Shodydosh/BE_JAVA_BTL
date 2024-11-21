@@ -6,6 +6,8 @@ import com.javaBTL.BE_JAVA_BTL.model.Product;
 import com.javaBTL.BE_JAVA_BTL.service.CartItemService;
 import com.javaBTL.BE_JAVA_BTL.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +24,14 @@ public class CartController {
     @GetMapping("/all")
     public List<UUID> getAllCart() {
         return cartService.getAllCartId();
+    }
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Cart> getCartByUserId(@PathVariable UUID userId) {
+        Cart cart = cartService.getCartByUserId(userId);
+        if (cart == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(cart, HttpStatus.OK);
     }
 
     @DeleteMapping("/{cartId}/clear")

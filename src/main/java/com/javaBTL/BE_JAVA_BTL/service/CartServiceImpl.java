@@ -36,6 +36,10 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
         cartItemRepository.deleteByCartId(cartId);
     }
+    @Override
+    public Cart getCartByUserId(UUID userId) {
+        return cartRepository.getCartByUserId(userId);
+    }
 
 
 }

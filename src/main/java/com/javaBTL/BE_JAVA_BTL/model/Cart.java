@@ -1,5 +1,6 @@
 package com.javaBTL.BE_JAVA_BTL.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class Cart {
     @JsonManagedReference
     private User user;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cart")
     private List<CartItem> cartItems;
 
